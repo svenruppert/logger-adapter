@@ -1,16 +1,13 @@
 # logger-adapter
 A Core Java Logger Adapter
 
-
 ## Status
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter)
 
 [![](http://drone.rapidpm.org/api/badges/RapidPM/logger-adapter/status.svg?branch=develop)](http://drone.rapidpm.org/api/badges/RapidPM/logger-adapter/status.svg?branch=develop)
 
-![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=functional-reactive_functional-reactive-lib&metric=security_rating)
-![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=functional-reactive_functional-reactive-lib&metric=sqale_rating)
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a0b7d530374d400fa9a79d270cf95c1a)](https://www.codacy.com/app/sven-ruppert/functional-reactive-lib?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=functional-reactive/functional-reactive-lib&amp;utm_campaign=Badge_Grade)
+![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=security_rating)
+![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=sqale_rating)
 
 ## JDK8 or JDK9 and above
 I compiled this with the Open JDK8.
