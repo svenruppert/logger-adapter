@@ -21,7 +21,6 @@ Only if you start using the JMS, it could be helpful to add a **module-info.java
 Add the following lines, switch inside the pom.xml to the JDK version you prefer,
 start a **mvn clean install** and be happy ;-)
 
-
 ```java
 module rapidpm.dependencies.core.logger {
   requires log4j;
