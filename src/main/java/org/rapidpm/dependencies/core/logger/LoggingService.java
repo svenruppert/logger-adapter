@@ -48,6 +48,12 @@ public interface LoggingService {
    * @param thrown a {@link Throwable} object.
    */
   void finest(String message , Throwable thrown);
+  
+  void finest(String format, Object arg0);
+  
+  void finest(String format, Object arg1, Object arg2);
+  
+  void finest(String format, Object... arguments);
 
   /**
    * <p>isFinestEnabled.</p>
@@ -77,6 +83,13 @@ public interface LoggingService {
    */
   void info(String message);
 
+  void info(String message , Throwable thrown);
+  
+  void info(String format, Object arg0);
+  
+  void info(String format, Object arg1, Object arg2);
+  
+  void info(String format, Object... arguments);
   /**
    * <p>warning.</p>
    *

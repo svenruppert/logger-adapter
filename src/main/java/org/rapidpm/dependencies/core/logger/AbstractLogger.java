@@ -16,6 +16,8 @@
 package org.rapidpm.dependencies.core.logger;
 
 import java.util.logging.Level;
+import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.FormattingTuple;
+import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.MessageFormatter;
 
 
 /**
@@ -43,6 +45,29 @@ public abstract class AbstractLogger implements LoggingService {
     public void finest(Throwable thrown) {
         log(Level.FINEST, thrown.getMessage(), thrown);
     }
+    
+    @Override
+    public void finest(String format, Object arg0) {
+      finest(format, arg0, null);
+    }
+    
+    @Override
+    public void finest(String format, Object arg1, Object arg2) {
+      if (!isFinestEnabled()) {
+        return;
+      }
+      FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
+      finest(tp.getMessage(), tp.getThrowable());
+    }
+      
+      @Override
+      public void finest(String format, Object... arguments) {
+        if (!isFinestEnabled()) {
+          return;
+        }
+      FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
+      finest(tp.getMessage(), tp.getThrowable());
+      }
 
     /** {@inheritDoc} */
     @Override
@@ -66,6 +91,34 @@ public abstract class AbstractLogger implements LoggingService {
     @Override
     public void info(String message) {
         log(Level.INFO, message);
+    }
+
+    @Override
+    public void info(String message, Throwable thrown) {
+      log(Level.INFO, message, thrown);
+    }
+
+    @Override
+    public void info(String format, Object arg0) {
+      info(format, arg0, null);
+    }
+
+    @Override
+    public void info(String format, Object arg1, Object arg2) {
+      if (!isLoggable(Level.INFO)) {
+        return;
+      }
+      FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
+      info(tp.getMessage(), tp.getThrowable());
+    }
+
+    @Override
+    public void info(String format, Object... arguments) {
+      if (!isLoggable(Level.INFO)) {
+        return;
+      }
+      FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
+      info(tp.getMessage(), tp.getThrowable());
     }
 
     /** {@inheritDoc} */

@@ -16,7 +16,6 @@
 package org.rapidpm.dependencies.core.logger.factory;
 
 import java.util.logging.Level;
-
 import org.rapidpm.dependencies.core.logger.LogEvent;
 import org.rapidpm.dependencies.core.logger.LoggingService;
 
@@ -49,6 +48,15 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public void finest(String format, Object arg0) {}
+
+    @Override
+    public void finest(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void finest(String format, Object... arguments) {}
+
+    @Override
     public boolean isFinestEnabled() {
       return false;
     }
@@ -65,6 +73,18 @@ public class NoLogFactory implements LoggerFactory {
     @Override
     public void info(String message) {
     }
+
+    @Override
+    public void info(String message, Throwable thrown) {}
+
+    @Override
+    public void info(String format, Object arg0) {}
+
+    @Override
+    public void info(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void info(String format, Object... arguments) {}
 
     @Override
     public void severe(String message) {
