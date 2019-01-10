@@ -133,7 +133,13 @@ public interface LoggingService {
    * @param thrown a {@link Throwable} object.
    */
   void severe(String message , Throwable thrown);
-
+  
+  void severe(String format, Object arg0);
+  
+  void severe(String format, Object arg1, Object arg2);
+  
+  void severe(String format, Object... arguments);
+  
   /**
    * <p>log.</p>
    *

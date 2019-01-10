@@ -139,6 +139,29 @@ public abstract class AbstractLogger implements LoggingService {
         log(Level.SEVERE, message, thrown);
     }
 
+    @Override
+    public void severe(String format, Object arg0) {
+      severe(format, arg0, null);
+    }
+    
+    @Override
+    public void severe(String format, Object arg1, Object arg2) {
+      if (!isLoggable(Level.SEVERE)) {
+        return;
+      }
+      FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
+      severe(tp.getMessage(), tp.getThrowable());
+    }
+      
+    @Override
+    public void severe(String format, Object... arguments) {
+      if (!isLoggable(Level.SEVERE)) {
+        return;
+      }
+      FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
+      severe(tp.getMessage(), tp.getThrowable());
+    }
+
     /** {@inheritDoc} */
     @Override
     public void warning(String message) {

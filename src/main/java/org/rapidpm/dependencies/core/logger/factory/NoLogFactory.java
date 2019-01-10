@@ -99,6 +99,15 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public void severe(String format, Object arg0) {}
+
+    @Override
+    public void severe(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void severe(String format, Object... arguments) {}
+
+    @Override
     public void warning(String message) {
     }
 
