@@ -120,6 +120,15 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public void warning(String format, Object arg0) {}
+
+    @Override
+    public void warning(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void warning(String format, Object... arguments) {}
+
+    @Override
     public void log(Level level , String message) {
     }
 

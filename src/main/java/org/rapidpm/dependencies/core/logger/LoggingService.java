@@ -112,6 +112,12 @@ public interface LoggingService {
    */
   void warning(String message , Throwable thrown);
 
+  void warning(String format, Object arg0);
+  
+  void warning(String format, Object arg1, Object arg2);
+  
+  void warning(String format, Object... arguments);
+  
   /**
    * <p>severe.</p>
    *
