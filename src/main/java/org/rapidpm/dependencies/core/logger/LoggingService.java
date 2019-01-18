@@ -208,4 +208,10 @@ public interface LoggingService {
    */
   boolean isLoggable(Level level);
 
+  boolean isWarningEnabled();
+
+  boolean isSevereEnabled();
+
+  boolean isInfoEnabled();
+
 }

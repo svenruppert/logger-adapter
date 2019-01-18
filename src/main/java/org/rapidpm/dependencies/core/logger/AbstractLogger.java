@@ -115,14 +115,19 @@ public abstract class AbstractLogger implements LoggingService {
 
     @Override
     public void info(Supplier<String> message) {
-      if(isLoggable(Level.INFO)) {
+      if(isInfoEnabled()) {
         info(message.get());
       }
+    }
+
+    @Override
+    public boolean isInfoEnabled() {
+      return isLoggable(Level.INFO);
     }
     
     @Override
     public void info(Supplier<String> message, Throwable thrown) {
-      if(isLoggable(Level.INFO)) {
+      if(isInfoEnabled()) {
         info(message.get(), thrown);
       }
     }
@@ -134,7 +139,7 @@ public abstract class AbstractLogger implements LoggingService {
 
     @Override
     public void info(String format, Object arg1, Object arg2) {
-      if (!isLoggable(Level.INFO)) {
+      if (!isInfoEnabled()) {
         return;
       }
       FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
@@ -143,7 +148,7 @@ public abstract class AbstractLogger implements LoggingService {
 
     @Override
     public void info(String format, Object... arguments) {
-      if (!isLoggable(Level.INFO)) {
+      if (!isInfoEnabled()) {
         return;
       }
       FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
@@ -170,14 +175,14 @@ public abstract class AbstractLogger implements LoggingService {
 
     @Override
     public void severe(Supplier<String> message) {
-      if(isLoggable(Level.SEVERE)) {
+      if(isSevereEnabled()) {
         severe(message.get());
       }
     }
     
     @Override
     public void severe(Supplier<String> message, Throwable thrown) {
-      if(isLoggable(Level.SEVERE)) {
+      if(isSevereEnabled()) {
         severe(message.get(), thrown);
       }
     }
@@ -189,7 +194,7 @@ public abstract class AbstractLogger implements LoggingService {
     
     @Override
     public void severe(String format, Object arg1, Object arg2) {
-      if (!isLoggable(Level.SEVERE)) {
+      if (!isSevereEnabled()) {
         return;
       }
       FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
@@ -198,11 +203,16 @@ public abstract class AbstractLogger implements LoggingService {
       
     @Override
     public void severe(String format, Object... arguments) {
-      if (!isLoggable(Level.SEVERE)) {
+      if (!isSevereEnabled()) {
         return;
       }
       FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
       severe(tp.getMessage(), tp.getThrowable());
+    }
+
+    @Override
+    public boolean isSevereEnabled() {
+      return isLoggable(Level.SEVERE);
     }
 
     /** {@inheritDoc} */
@@ -230,21 +240,26 @@ public abstract class AbstractLogger implements LoggingService {
     
     @Override
     public void warning(Supplier<String> message) {
-      if(isLoggable(Level.WARNING)) {
+      if(isWarningEnabled()) {
         warning(message.get());
       }
     }
     
     @Override
     public void warning(Supplier<String> message, Throwable thrown) {
-      if(isLoggable(Level.WARNING)) {
+      if(isWarningEnabled()) {
         warning(message.get(), thrown);
       }
+    }
+
+    @Override
+    public boolean isWarningEnabled() {
+      return isLoggable(Level.WARNING);
     }
     
     @Override
     public void warning(String format, Object arg1, Object arg2) {
-      if (!isLoggable(Level.WARNING)) {
+      if (!isWarningEnabled()) {
         return;
       }
       FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
@@ -253,7 +268,7 @@ public abstract class AbstractLogger implements LoggingService {
       
     @Override
     public void warning(String format, Object... arguments) {
-      if (!isLoggable(Level.WARNING)) {
+      if (!isWarningEnabled()) {
         return;
       }
       FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);

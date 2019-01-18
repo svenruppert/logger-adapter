@@ -80,6 +80,21 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public boolean isWarningEnabled() {
+      return false;
+    }
+    
+    @Override
+    public boolean isSevereEnabled() {
+      return false;
+    }
+    
+    @Override
+    public boolean isInfoEnabled() {
+      return false;
+    }
+    
+    @Override
     public void info(String message) {
     }
 
