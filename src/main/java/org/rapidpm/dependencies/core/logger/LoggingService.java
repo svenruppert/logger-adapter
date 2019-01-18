@@ -15,6 +15,7 @@
  */
 package org.rapidpm.dependencies.core.logger;
 
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -48,6 +49,10 @@ public interface LoggingService {
    * @param thrown a {@link Throwable} object.
    */
   void finest(String message , Throwable thrown);
+  
+  void finest(Supplier<String> message);
+  
+  void finest(Supplier<String> message, Throwable thrown);
   
   void finest(String format, Object arg0);
   
@@ -83,6 +88,10 @@ public interface LoggingService {
    */
   void info(String message);
 
+  void info(Supplier<String> message);
+  
+  void info(Supplier<String> message, Throwable thrown);
+  
   void info(String message , Throwable thrown);
   
   void info(String format, Object arg0);
@@ -112,6 +121,10 @@ public interface LoggingService {
    */
   void warning(String message , Throwable thrown);
 
+  void warning(Supplier<String> message);
+  
+  void warning(Supplier<String> message, Throwable thrown);
+  
   void warning(String format, Object arg0);
   
   void warning(String format, Object arg1, Object arg2);
@@ -132,6 +145,9 @@ public interface LoggingService {
    */
   void severe(Throwable thrown);
 
+  void severe(Supplier<String> message);
+  
+  void severe(Supplier<String> message, Throwable thrown);
   /**
    * <p>severe.</p>
    *

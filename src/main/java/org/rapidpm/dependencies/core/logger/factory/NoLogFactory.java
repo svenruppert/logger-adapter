@@ -15,6 +15,7 @@
  */
 package org.rapidpm.dependencies.core.logger.factory;
 
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import org.rapidpm.dependencies.core.logger.LogEvent;
 import org.rapidpm.dependencies.core.logger.LoggingService;
@@ -48,6 +49,14 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public void finest(Supplier<String> message) {
+    }
+    
+    @Override
+    public void finest(Supplier<String> message, Throwable thrown) {
+    }
+    
+    @Override
     public void finest(String format, Object arg0) {}
 
     @Override
@@ -75,6 +84,14 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public void info(Supplier<String> message) {     
+    }
+    
+    @Override
+    public void info(Supplier<String> message, Throwable thrown) {
+    }
+    
+    @Override
     public void info(String message, Throwable thrown) {}
 
     @Override
@@ -97,7 +114,15 @@ public class NoLogFactory implements LoggerFactory {
     @Override
     public void severe(String message , Throwable thrown) {
     }
-
+    
+    @Override
+    public void severe(Supplier<String> message) {
+    }
+    
+    @Override
+    public void severe(Supplier<String> message, Throwable thrown) {
+    }
+    
     @Override
     public void severe(String format, Object arg0) {}
 
@@ -119,6 +144,14 @@ public class NoLogFactory implements LoggerFactory {
     public void warning(String message , Throwable thrown) {
     }
 
+    @Override
+    public void warning(Supplier<String> message) {
+    }
+    
+    @Override
+    public void warning(Supplier<String> message, Throwable thrown) {
+    }
+    
     @Override
     public void warning(String format, Object arg0) {}
 

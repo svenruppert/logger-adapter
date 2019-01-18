@@ -15,6 +15,7 @@
  */
 package org.rapidpm.dependencies.core.logger;
 
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.FormattingTuple;
 import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.MessageFormatter;
@@ -44,6 +45,20 @@ public abstract class AbstractLogger implements LoggingService {
     @Override
     public void finest(Throwable thrown) {
         log(Level.FINEST, thrown.getMessage(), thrown);
+    }
+    
+    @Override
+    public void finest(Supplier<String> message) {
+      if(isFinestEnabled()) {
+        finest(message.get());
+      }
+    }
+    
+    @Override
+    public void finest(Supplier<String> message, Throwable thrown) {
+      if(isFinestEnabled()) {
+        finest(message.get(), thrown);
+      }
     }
     
     @Override
@@ -99,6 +114,20 @@ public abstract class AbstractLogger implements LoggingService {
     }
 
     @Override
+    public void info(Supplier<String> message) {
+      if(isLoggable(Level.INFO)) {
+        info(message.get());
+      }
+    }
+    
+    @Override
+    public void info(Supplier<String> message, Throwable thrown) {
+      if(isLoggable(Level.INFO)) {
+        info(message.get(), thrown);
+      }
+    }
+    
+    @Override
     public void info(String format, Object arg0) {
       info(format, arg0, null);
     }
@@ -139,6 +168,20 @@ public abstract class AbstractLogger implements LoggingService {
         log(Level.SEVERE, message, thrown);
     }
 
+    @Override
+    public void severe(Supplier<String> message) {
+      if(isLoggable(Level.SEVERE)) {
+        severe(message.get());
+      }
+    }
+    
+    @Override
+    public void severe(Supplier<String> message, Throwable thrown) {
+      if(isLoggable(Level.SEVERE)) {
+        severe(message.get(), thrown);
+      }
+    }
+    
     @Override
     public void severe(String format, Object arg0) {
       severe(format, arg0, null);
@@ -183,6 +226,20 @@ public abstract class AbstractLogger implements LoggingService {
     @Override
     public void warning(String format, Object arg0) {
       warning(format, arg0, null);
+    }
+    
+    @Override
+    public void warning(Supplier<String> message) {
+      if(isLoggable(Level.WARNING)) {
+        warning(message.get());
+      }
+    }
+    
+    @Override
+    public void warning(Supplier<String> message, Throwable thrown) {
+      if(isLoggable(Level.WARNING)) {
+        warning(message.get(), thrown);
+      }
     }
     
     @Override
