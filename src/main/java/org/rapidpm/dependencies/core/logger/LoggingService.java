@@ -15,6 +15,7 @@
  */
 package org.rapidpm.dependencies.core.logger;
 
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -48,6 +49,16 @@ public interface LoggingService {
    * @param thrown a {@link Throwable} object.
    */
   void finest(String message , Throwable thrown);
+  
+  void finest(Supplier<String> message);
+  
+  void finest(Supplier<String> message, Throwable thrown);
+  
+  void finest(String format, Object arg0);
+  
+  void finest(String format, Object arg1, Object arg2);
+  
+  void finest(String format, Object... arguments);
 
   /**
    * <p>isFinestEnabled.</p>
@@ -77,6 +88,17 @@ public interface LoggingService {
    */
   void info(String message);
 
+  void info(Supplier<String> message);
+  
+  void info(Supplier<String> message, Throwable thrown);
+  
+  void info(String message , Throwable thrown);
+  
+  void info(String format, Object arg0);
+  
+  void info(String format, Object arg1, Object arg2);
+  
+  void info(String format, Object... arguments);
   /**
    * <p>warning.</p>
    *
@@ -99,6 +121,16 @@ public interface LoggingService {
    */
   void warning(String message , Throwable thrown);
 
+  void warning(Supplier<String> message);
+  
+  void warning(Supplier<String> message, Throwable thrown);
+  
+  void warning(String format, Object arg0);
+  
+  void warning(String format, Object arg1, Object arg2);
+  
+  void warning(String format, Object... arguments);
+  
   /**
    * <p>severe.</p>
    *
@@ -113,6 +145,9 @@ public interface LoggingService {
    */
   void severe(Throwable thrown);
 
+  void severe(Supplier<String> message);
+  
+  void severe(Supplier<String> message, Throwable thrown);
   /**
    * <p>severe.</p>
    *
@@ -120,7 +155,13 @@ public interface LoggingService {
    * @param thrown a {@link Throwable} object.
    */
   void severe(String message , Throwable thrown);
-
+  
+  void severe(String format, Object arg0);
+  
+  void severe(String format, Object arg1, Object arg2);
+  
+  void severe(String format, Object... arguments);
+  
   /**
    * <p>log.</p>
    *
@@ -166,5 +207,11 @@ public interface LoggingService {
    * @return a boolean.
    */
   boolean isLoggable(Level level);
+
+  boolean isWarningEnabled();
+
+  boolean isSevereEnabled();
+
+  boolean isInfoEnabled();
 
 }

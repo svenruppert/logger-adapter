@@ -15,8 +15,8 @@
  */
 package org.rapidpm.dependencies.core.logger.factory;
 
+import java.util.function.Supplier;
 import java.util.logging.Level;
-
 import org.rapidpm.dependencies.core.logger.LogEvent;
 import org.rapidpm.dependencies.core.logger.LoggingService;
 
@@ -49,6 +49,23 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public void finest(Supplier<String> message) {
+    }
+    
+    @Override
+    public void finest(Supplier<String> message, Throwable thrown) {
+    }
+    
+    @Override
+    public void finest(String format, Object arg0) {}
+
+    @Override
+    public void finest(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void finest(String format, Object... arguments) {}
+
+    @Override
     public boolean isFinestEnabled() {
       return false;
     }
@@ -63,8 +80,43 @@ public class NoLogFactory implements LoggerFactory {
     }
 
     @Override
+    public boolean isWarningEnabled() {
+      return false;
+    }
+    
+    @Override
+    public boolean isSevereEnabled() {
+      return false;
+    }
+    
+    @Override
+    public boolean isInfoEnabled() {
+      return false;
+    }
+    
+    @Override
     public void info(String message) {
     }
+
+    @Override
+    public void info(Supplier<String> message) {     
+    }
+    
+    @Override
+    public void info(Supplier<String> message, Throwable thrown) {
+    }
+    
+    @Override
+    public void info(String message, Throwable thrown) {}
+
+    @Override
+    public void info(String format, Object arg0) {}
+
+    @Override
+    public void info(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void info(String format, Object... arguments) {}
 
     @Override
     public void severe(String message) {
@@ -77,6 +129,23 @@ public class NoLogFactory implements LoggerFactory {
     @Override
     public void severe(String message , Throwable thrown) {
     }
+    
+    @Override
+    public void severe(Supplier<String> message) {
+    }
+    
+    @Override
+    public void severe(Supplier<String> message, Throwable thrown) {
+    }
+    
+    @Override
+    public void severe(String format, Object arg0) {}
+
+    @Override
+    public void severe(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void severe(String format, Object... arguments) {}
 
     @Override
     public void warning(String message) {
@@ -89,6 +158,23 @@ public class NoLogFactory implements LoggerFactory {
     @Override
     public void warning(String message , Throwable thrown) {
     }
+
+    @Override
+    public void warning(Supplier<String> message) {
+    }
+    
+    @Override
+    public void warning(Supplier<String> message, Throwable thrown) {
+    }
+    
+    @Override
+    public void warning(String format, Object arg0) {}
+
+    @Override
+    public void warning(String format, Object arg1, Object arg2) {}
+
+    @Override
+    public void warning(String format, Object... arguments) {}
 
     @Override
     public void log(Level level , String message) {
