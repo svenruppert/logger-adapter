@@ -55,10 +55,10 @@
     <system>Github</system>
     <url>https://github.com/svenruppert/logger-adapter/issues</url>
   </issueManagement>
-  <ciManagement>
-    <system>Drone</system>
-    <url>http://drone.rapidpm.org/RapidPM/logger-adapter</url>
-  </ciManagement>
+<!--  <ciManagement>-->
+<!--    <system>Drone</system>-->
+<!--    <url>http://drone.rapidpm.org/RapidPM/logger-adapter</url>-->
+<!--  </ciManagement>-->
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -78,6 +78,14 @@
 
   </properties>
 
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
+
   <dependencies>
 
     <!--LOG4J-->
@@ -91,37 +99,24 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.11.1</version>
+      <version>2.11.2</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.11.1</version>
+      <version>2.11.2</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
+      <version>1.7.26</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
-
-    <!--<dependency>-->
-      <!--<groupId>org.slf4j</groupId>-->
-      <!--<artifactId>slf4j-api</artifactId>-->
-      <!--<version>${slf4j.version}</version>-->
-      <!--<scope>test</scope>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.slf4j</groupId>-->
-      <!--<artifactId>slf4j-simple</artifactId>-->
-      <!--<version>${slf4j.version}</version>-->
-      <!--<scope>test</scope>-->
-    <!--</dependency>-->
   </dependencies>
 
   <build>
@@ -201,7 +196,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.0</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>

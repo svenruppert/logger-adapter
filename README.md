@@ -3,8 +3,9 @@ A Core Java Logger Adapter
 
 ## Status
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter)
+[![Release](https://jitpack.io/v/svenruppert/logger-adapter.svg)](https://jitpack.io/#svenruppert/logger-adapter)
 
-[![](http://drone.rapidpm.org/api/badges/RapidPM/logger-adapter/status.svg?branch=develop)](http://drone.rapidpm.org/api/badges/RapidPM/logger-adapter/status.svg?branch=develop)
+[![](https://jitci.com/gh/svenruppert/logger-adapter/svg)](https://jitci.com/gh/svenruppert/logger-adapter)
 
 ![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=security_rating)
 ![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=sqale_rating)
