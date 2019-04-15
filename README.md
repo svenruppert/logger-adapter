@@ -53,8 +53,8 @@ The snapshot dependencies are now available as well as releases under
 
 ```xml
 	<dependency>
-	    <groupId>com.github.rapidpm</groupId>
-	    <artifactId>rapidpm-dependencies</artifactId>
+	    <groupId>com.github.svenruppert</groupId>
+	    <artifactId>logger-adapter</artifactId>
 	    <version>--version--</version>
 	</dependency>
 ```
