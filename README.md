@@ -36,6 +36,28 @@ This Lib is working with
  * Java 10 (open/oracle/zulu)
  * Java 11 (open/oracle/zulu)
  * Java 12 (open/oracle/zulu)
+ 
+Since version 01.00.02-RPM I will start using JitCI to make my life easier.
+SO, please add the following dependency to your pom.xml
+
+```xml
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+``` 
+
+The snapshot dependencies are now available as well as releases under
+
+```xml
+	<dependency>
+	    <groupId>com.github.rapidpm</groupId>
+	    <artifactId>rapidpm-dependencies</artifactId>
+	    <version>--version--</version>
+	</dependency>
+```
 
 ## Why?
 Every time you have to define/decide what will be your logger.. But you are writing a lib?
