@@ -1,5 +1,6 @@
-# logger-adapter
-A Core Java Logger Adapter
+# Logger Adapter
+A Core Java Logger Adapter that will give you the possibility to write Logger independent 
+code. 
 
 ## Status
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter)
@@ -29,16 +30,31 @@ module rapidpm.dependencies.core.logger {
 }
 ```
 
-# Release Notes
-This Lib is working with
- * Java 08 (open/oracle/ibm/zulu/graalvm)
- * Java 09 (open/oracle/ibm/zulu)
- * Java 10 (open/oracle/zulu)
- * Java 11 (open/oracle/zulu)
- * Java 12 (open/oracle/zulu)
- 
-Since version 01.00.02-RPM I will start using JitCI to make my life easier.
-SO, please add the following dependency to your pom.xml
+## Supported Versions and vendors
+### Vendors
+* OpenJDK
+* Oracle
+* Oracle - GraalVM
+* Amazon
+* IBM
+* Adopt-OpenJ9
+* Zulu
+* Liberica
+
+### JDK Versions 
+* JDK 6
+* JDK 7
+* JDK 8
+* JDK 9
+* JDK 10
+* JDK 11
+* JDK 12
+* JDK 13
+
+## Distribution Management
+The final releases are available in maven central.
+But additionally I am using JITPack and JitCI.
+To used JitPack as well you have to add the JitPack Repository to your *pom.xml*
 
 ```xml
   <repositories>
@@ -59,20 +75,17 @@ The snapshot dependencies are now available as well as releases under
 	</dependency>
 ```
 
-## Why?
-Every time you have to define/decide what will be your logger.. But you are writing a lib?
-What ever you will choose, it will be wrong.
+## Why do we need a Core Java Logger Adapter?
+In every project, there is the decision of what logger framework should be used.
+The bad thing here is, whatever you are choosing, it will be the wrong one. Other projects or frameworks are using different logger frameworks.
+So I decided to create a simple, robust solution that will give me the freedom to stop worrying about it. At runtime, this Adapter will check what logging framework is available 
+in the classpath and will transparently use this.
 
-Other projects will make other decisions.. So let them decide what is right for them.
-
-This means for you: Write an Adapter, that will decide at runtime what is the right 
-logger-implementation.
 
 ## How to use?
-To use this you can go two ways.
-First of all, add the dependency.
-
-Second, choose the way you want to define a Logger.
+To use this you have two possibilities.
+However, the first step is to add the dependency to your *pom.xml*.
+Second step is, chooseing the way you want to define a Logger.
 
 ### Way One:
 Define a class attribute.
@@ -83,7 +96,8 @@ LoggerService logger = Logger.getLogger(getClass());
 
 ### Way Two:
 You can implement an interface, that will give you a method to get the logger.
-The interface provides a default - implementation, so there is nothing to do for you..
+The interface provides a default - implementation, so there is nothing additional to do for you.
+This solution is perfect for web apps as well because you don´t have to worry about Serializable.
 
 ```java
 MyClass implements HasLogger {}
