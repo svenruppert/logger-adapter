@@ -15,10 +15,9 @@
  */
 package org.rapidpm.dependencies.core.logger
 
+import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.MessageFormatter
 import java.util.function.Supplier
 import java.util.logging.Level
-import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.MessageFormatter
-import kotlin.math.log
 
 
 /**
@@ -75,23 +74,21 @@ abstract class AbstractLogger : LoggingService {
   }
 
   override fun finest(format: String, arg0: Any) {
-    finest(format, arg0, null!!)
+    finest(format, arg0, "")
   }
 
   override fun finest(format: String, arg1: Any, arg2: Any) {
-    if (!isFinestEnabled) {
-      return
+    if (isFinestEnabled) {
+      val tp = MessageFormatter.format(format, arg1, arg2)
+      finest(tp.message!!, tp.throwable!!)
     }
-    val tp = MessageFormatter.format(format, arg1, arg2)
-    finest(tp.message!!, tp.throwable!!)
   }
 
   override fun finest(format: String, vararg arguments: Any) {
-    if (!isFinestEnabled) {
-      return
+    if (isFinestEnabled) {
+      val tp = MessageFormatter.arrayFormat(format, arguments)
+      finest(tp.message!!, tp.throwable!!)
     }
-    val tp = MessageFormatter.arrayFormat(format, arguments)
-    finest(tp.message!!, tp.throwable!!)
   }
 
   /** {@inheritDoc}  */
@@ -125,19 +122,17 @@ abstract class AbstractLogger : LoggingService {
   }
 
   override fun info(format: String, arg1: Any, arg2: Any) {
-    if (!isInfoEnabled) {
-      return
+    if (isInfoEnabled) {
+      val tp = MessageFormatter.format(format, arg1, arg2)
+      info(tp.message!!, tp.throwable!!)
     }
-    val tp = MessageFormatter.format(format, arg1, arg2)
-    info(tp.message!!, tp.throwable!!)
   }
 
   override fun info(format: String, vararg arguments: Any) {
-    if (!isInfoEnabled) {
-      return
+    if (isInfoEnabled) {
+      val tp = MessageFormatter.arrayFormat(format, arguments)
+      info(tp.message!!, tp.throwable!!)
     }
-    val tp = MessageFormatter.arrayFormat(format, arguments)
-    info(tp.message!!, tp.throwable!!)
   }
 
   /** {@inheritDoc}  */
@@ -172,19 +167,17 @@ abstract class AbstractLogger : LoggingService {
   }
 
   override fun severe(format: String, arg1: Any, arg2: Any) {
-    if (!isSevereEnabled) {
-      return
+    if (isSevereEnabled) {
+      val tp = MessageFormatter.format(format, arg1, arg2)
+      severe(tp.message!!, tp.throwable!!)
     }
-    val tp = MessageFormatter.format(format, arg1, arg2)
-    severe(tp.message!!, tp.throwable!!)
   }
 
   override fun severe(format: String, vararg arguments: Any) {
-    if (!isSevereEnabled) {
-      return
+    if (isSevereEnabled) {
+      val tp = MessageFormatter.arrayFormat(format, arguments)
+      severe(tp.message!!, tp.throwable!!)
     }
-    val tp = MessageFormatter.arrayFormat(format, arguments)
-    severe(tp.message!!, tp.throwable!!)
   }
 
   /** {@inheritDoc}  */

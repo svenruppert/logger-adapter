@@ -40,12 +40,10 @@ object ConcurrencyUtil {
   fun <K, V> getOrPutIfAbsent(map: ConcurrentMap<K, V>,
                               key: K,
                               func: ConstructorFunction<K, V>): V {
-//    var value: V? = map[key]
-    if (map[key] == null) {
+    return if (map[key] == null) {
       val value = func.createNew(key)
       val current = (map as MutableMap<K, V>).putIfAbsent(key, value)
       return current ?: value
-    }
-    return map[key]!!
+    } else map[key]!!
   }
 }
