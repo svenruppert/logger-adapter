@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,66 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger.factory;
+package org.rapidpm.dependencies.core.logger.factory
 
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-
-import org.rapidpm.dependencies.core.logger.AbstractLogger;
-import org.rapidpm.dependencies.core.logger.LogEvent;
-import org.rapidpm.dependencies.core.logger.LoggerFactorySupport;
-import org.rapidpm.dependencies.core.logger.LoggingService;
+import java.util.logging.Level
+import java.util.logging.LogRecord
+import java.util.logging.Logger
+import org.rapidpm.dependencies.core.logger.AbstractLogger
+import org.rapidpm.dependencies.core.logger.LogEvent
+import org.rapidpm.dependencies.core.logger.LoggerFactorySupport
+import org.rapidpm.dependencies.core.logger.LoggingService
 
 /**
- * <p>StandardLoggerFactory class.</p>
+ *
+ * StandardLoggerFactory class.
  *
  * @author svenruppert
  * @version $Id: $Id
  */
-public class StandardLoggerFactory extends LoggerFactorySupport implements LoggerFactory {
+class StandardLoggerFactory : LoggerFactorySupport(), LoggerFactory {
 
-  /** {@inheritDoc} */
-  @Override
-  protected LoggingService createLogger(String name) {
-    final Logger l = Logger.getLogger(name);
-    return new StandardLogger(l);
+  /** {@inheritDoc}  */
+  override fun createLogger(name: String): LoggingService {
+    val l = Logger.getLogger(name)
+    return StandardLogger(l)
   }
 
-  static class StandardLogger extends AbstractLogger {
-    private final Logger logger;
-
-    public StandardLogger(Logger logger) {
-      this.logger = logger;
+  internal class StandardLogger(private val logger: Logger) : AbstractLogger() {
+    override fun log(level: Level, message: String) {
+      log(level, message, null)
     }
 
-    @Override
-    public void log(Level level , String message) {
-      log(level , message , null);
+    override val level: Level
+      get() = logger.level
+
+    override fun log(level: Level, message: String, thrown: Throwable?) {
+      val logRecord = LogRecord(level, message)
+      logRecord.loggerName = logger.name
+      logRecord.thrown = thrown
+      logRecord.sourceClassName = logger.name
+      logger.log(logRecord)
     }
 
-    @Override
-    public void log(Level level , String message , Throwable thrown) {
-      LogRecord logRecord = new LogRecord(level , message);
-      logRecord.setLoggerName(logger.getName());
-      logRecord.setThrown(thrown);
-      logRecord.setSourceClassName(logger.getName());
-      logger.log(logRecord);
+    override fun log(logEvent: LogEvent<*>) {
+      logger.log(logEvent.logRecord)
     }
 
-    @Override
-    public void log(LogEvent logEvent) {
-      logger.log(logEvent.getLogRecord());
-    }
-
-    @Override
-    public Level getLevel() {
-      return logger.getLevel();
-    }
-
-    @Override
-    public boolean isLoggable(Level level) {
-      return logger.isLoggable(level);
+    override fun isLoggable(level: Level): Boolean {
+      return logger.isLoggable(level)
     }
   }
 }

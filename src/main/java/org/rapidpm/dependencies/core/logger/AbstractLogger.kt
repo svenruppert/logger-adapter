@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,265 +13,224 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger;
+package org.rapidpm.dependencies.core.logger
 
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.FormattingTuple;
-import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.MessageFormatter;
+import java.util.function.Supplier
+import java.util.logging.Level
+import org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers.MessageFormatter
+import kotlin.math.log
 
 
 /**
- * <p>Abstract AbstractLogger class.</p>
+ *
+ * Abstract AbstractLogger class.
  *
  * @author svenruppert
  * @version $Id: $Id
  */
-public abstract class AbstractLogger implements LoggingService {
+abstract class AbstractLogger : LoggingService {
 
-    /** {@inheritDoc} */
-    @Override
-    public void finest(String message) {
-        log(Level.FINEST, message);
-    }
+  /** {@inheritDoc}  */
+  override val isFinestEnabled: Boolean
+    get() = isLoggable(Level.FINEST)
 
-    /** {@inheritDoc} */
-    @Override
-    public void finest(String message, Throwable thrown) {
-        log(Level.FINEST, message, thrown);
-    }
+  /** {@inheritDoc}  */
+  override val isFineEnabled: Boolean
+    get() = isLoggable(Level.FINE)
 
-    /** {@inheritDoc} */
-    @Override
-    public void finest(Throwable thrown) {
-        log(Level.FINEST, thrown.getMessage(), thrown);
-    }
-    
-    @Override
-    public void finest(Supplier<String> message) {
-      if(isFinestEnabled()) {
-        finest(message.get());
-      }
-    }
-    
-    @Override
-    public void finest(Supplier<String> message, Throwable thrown) {
-      if(isFinestEnabled()) {
-        finest(message.get(), thrown);
-      }
-    }
-    
-    @Override
-    public void finest(String format, Object arg0) {
-      finest(format, arg0, null);
-    }
-    
-    @Override
-    public void finest(String format, Object arg1, Object arg2) {
-      if (!isFinestEnabled()) {
-        return;
-      }
-      FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
-      finest(tp.getMessage(), tp.getThrowable());
-    }
-      
-      @Override
-      public void finest(String format, Object... arguments) {
-        if (!isFinestEnabled()) {
-          return;
-        }
-      FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
-      finest(tp.getMessage(), tp.getThrowable());
-      }
+  override val isInfoEnabled: Boolean
+    get() = isLoggable(Level.INFO)
 
-    /** {@inheritDoc} */
-    @Override
-    public void fine(String message) {
-        log(Level.FINE, message);
-    }
+  override val isSevereEnabled: Boolean
+    get() = isLoggable(Level.SEVERE)
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean isFinestEnabled() {
-        return isLoggable(Level.FINEST);
-    }
+  override val isWarningEnabled: Boolean
+    get() = isLoggable(Level.WARNING)
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean isFineEnabled() {
-        return isLoggable(Level.FINE);
-    }
+  /** {@inheritDoc}  */
+  override fun finest(message: String) {
+    log(Level.FINEST, message)
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void info(String message) {
-        log(Level.INFO, message);
-    }
+  /** {@inheritDoc}  */
+  override fun finest(message: String, thrown: Throwable) {
+    log(Level.FINEST, message, thrown)
+  }
 
-    @Override
-    public void info(String message, Throwable thrown) {
-      log(Level.INFO, message, thrown);
-    }
+  /** {@inheritDoc}  */
+  override fun finest(thrown: Throwable) {
+    log(Level.FINEST, thrown.message ?: "no message ", thrown)
+  }
 
-    @Override
-    public void info(Supplier<String> message) {
-      if(isInfoEnabled()) {
-        info(message.get());
-      }
+  override fun finest(message: Supplier<String>) {
+    if (isFinestEnabled) {
+      finest(message.get())
     }
+  }
 
-    @Override
-    public boolean isInfoEnabled() {
-      return isLoggable(Level.INFO);
+  override fun finest(message: Supplier<String>, thrown: Throwable) {
+    if (isFinestEnabled) {
+      finest(message.get(), thrown)
     }
-    
-    @Override
-    public void info(Supplier<String> message, Throwable thrown) {
-      if(isInfoEnabled()) {
-        info(message.get(), thrown);
-      }
-    }
-    
-    @Override
-    public void info(String format, Object arg0) {
-      info(format, arg0, null);
-    }
+  }
 
-    @Override
-    public void info(String format, Object arg1, Object arg2) {
-      if (!isInfoEnabled()) {
-        return;
-      }
-      FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
-      info(tp.getMessage(), tp.getThrowable());
-    }
+  override fun finest(format: String, arg0: Any) {
+    finest(format, arg0, null!!)
+  }
 
-    @Override
-    public void info(String format, Object... arguments) {
-      if (!isInfoEnabled()) {
-        return;
-      }
-      FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
-      info(tp.getMessage(), tp.getThrowable());
+  override fun finest(format: String, arg1: Any, arg2: Any) {
+    if (!isFinestEnabled) {
+      return
     }
+    val tp = MessageFormatter.format(format, arg1, arg2)
+    finest(tp.message!!, tp.throwable!!)
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void severe(String message) {
-        log(Level.SEVERE, message);
+  override fun finest(format: String, vararg arguments: Any) {
+    if (!isFinestEnabled) {
+      return
     }
+    val tp = MessageFormatter.arrayFormat(format, arguments)
+    finest(tp.message!!, tp.throwable!!)
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void severe(Throwable thrown) {
-        log(Level.SEVERE, thrown.getMessage(), thrown);
-    }
+  /** {@inheritDoc}  */
+  override fun fine(message: String) {
+    log(Level.FINE, message)
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void severe(String message, Throwable thrown) {
-        log(Level.SEVERE, message, thrown);
-    }
+  /** {@inheritDoc}  */
+  override fun info(message: String) {
+    log(Level.INFO, message)
+  }
 
-    @Override
-    public void severe(Supplier<String> message) {
-      if(isSevereEnabled()) {
-        severe(message.get());
-      }
-    }
-    
-    @Override
-    public void severe(Supplier<String> message, Throwable thrown) {
-      if(isSevereEnabled()) {
-        severe(message.get(), thrown);
-      }
-    }
-    
-    @Override
-    public void severe(String format, Object arg0) {
-      severe(format, arg0, null);
-    }
-    
-    @Override
-    public void severe(String format, Object arg1, Object arg2) {
-      if (!isSevereEnabled()) {
-        return;
-      }
-      FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
-      severe(tp.getMessage(), tp.getThrowable());
-    }
-      
-    @Override
-    public void severe(String format, Object... arguments) {
-      if (!isSevereEnabled()) {
-        return;
-      }
-      FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
-      severe(tp.getMessage(), tp.getThrowable());
-    }
+  override fun info(message: String, thrown: Throwable) {
+    log(Level.INFO, message, thrown)
+  }
 
-    @Override
-    public boolean isSevereEnabled() {
-      return isLoggable(Level.SEVERE);
+  override fun info(message: Supplier<String>) {
+    if (isInfoEnabled) {
+      info(message.get())
     }
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void warning(String message) {
-        log(Level.WARNING, message);
+  override fun info(message: Supplier<String>, thrown: Throwable) {
+    if (isInfoEnabled) {
+      info(message.get(), thrown)
     }
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void warning(Throwable thrown) {
-        log(Level.WARNING, thrown.getMessage(), thrown);
-    }
+  override fun info(format: String, arg0: Any) {
+    info(format, arg0, "")
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void warning(String message, Throwable thrown) {
-        log(Level.WARNING, message, thrown);
+  override fun info(format: String, arg1: Any, arg2: Any) {
+    if (!isInfoEnabled) {
+      return
     }
-    
-    @Override
-    public void warning(String format, Object arg0) {
-      warning(format, arg0, null);
-    }
-    
-    @Override
-    public void warning(Supplier<String> message) {
-      if(isWarningEnabled()) {
-        warning(message.get());
-      }
-    }
-    
-    @Override
-    public void warning(Supplier<String> message, Throwable thrown) {
-      if(isWarningEnabled()) {
-        warning(message.get(), thrown);
-      }
-    }
+    val tp = MessageFormatter.format(format, arg1, arg2)
+    info(tp.message!!, tp.throwable!!)
+  }
 
-    @Override
-    public boolean isWarningEnabled() {
-      return isLoggable(Level.WARNING);
+  override fun info(format: String, vararg arguments: Any) {
+    if (!isInfoEnabled) {
+      return
     }
-    
-    @Override
-    public void warning(String format, Object arg1, Object arg2) {
-      if (!isWarningEnabled()) {
-        return;
-      }
-      FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
-      warning(tp.getMessage(), tp.getThrowable());
+    val tp = MessageFormatter.arrayFormat(format, arguments)
+    info(tp.message!!, tp.throwable!!)
+  }
+
+  /** {@inheritDoc}  */
+  override fun severe(message: String) {
+    log(Level.SEVERE, message)
+  }
+
+  /** {@inheritDoc}  */
+  override fun severe(thrown: Throwable) {
+    log(Level.SEVERE, thrown.message ?: "no message ", thrown)
+  }
+
+  /** {@inheritDoc}  */
+  override fun severe(message: String, thrown: Throwable) {
+    log(Level.SEVERE, message, thrown)
+  }
+
+  override fun severe(message: Supplier<String>) {
+    if (isSevereEnabled) {
+      severe(message.get())
     }
-      
-    @Override
-    public void warning(String format, Object... arguments) {
-      if (!isWarningEnabled()) {
-        return;
-      }
-      FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
-      warning(tp.getMessage(), tp.getThrowable());
+  }
+
+  override fun severe(message: Supplier<String>, thrown: Throwable) {
+    if (isSevereEnabled) {
+      severe(message.get(), thrown)
     }
+  }
+
+  override fun severe(format: String, arg0: Any) {
+    severe(format, arg0, "")
+  }
+
+  override fun severe(format: String, arg1: Any, arg2: Any) {
+    if (!isSevereEnabled) {
+      return
+    }
+    val tp = MessageFormatter.format(format, arg1, arg2)
+    severe(tp.message!!, tp.throwable!!)
+  }
+
+  override fun severe(format: String, vararg arguments: Any) {
+    if (!isSevereEnabled) {
+      return
+    }
+    val tp = MessageFormatter.arrayFormat(format, arguments)
+    severe(tp.message!!, tp.throwable!!)
+  }
+
+  /** {@inheritDoc}  */
+  override fun warning(message: String) {
+    log(Level.WARNING, message)
+  }
+
+  /** {@inheritDoc}  */
+  override fun warning(thrown: Throwable) {
+    log(Level.WARNING, thrown.message ?: "no message ", thrown)
+  }
+
+  /** {@inheritDoc}  */
+  override fun warning(message: String, thrown: Throwable) {
+    log(Level.WARNING, message, thrown)
+  }
+
+  override fun warning(format: String, arg0: Any) {
+    warning(format, arg0, "")
+  }
+
+  override fun warning(message: Supplier<String>) {
+    if (isWarningEnabled) {
+      warning(message.get())
+    }
+  }
+
+  override fun warning(message: Supplier<String>, thrown: Throwable) {
+    if (isWarningEnabled) {
+      warning(message.get(), thrown)
+    }
+  }
+
+  override fun warning(format: String, arg1: Any, arg2: Any) {
+    if (!isWarningEnabled) {
+      return
+    }
+    val tp = MessageFormatter.format(format, arg1, arg2)
+    warning(tp.message!!, tp.throwable!!)
+  }
+
+  override fun warning(format: String, vararg arguments: Any) {
+    if (!isWarningEnabled) {
+      return
+    }
+    val tp = MessageFormatter.arrayFormat(format, arguments)
+    warning(tp.message!!, tp.throwable!!)
+  }
 }

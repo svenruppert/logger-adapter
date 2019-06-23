@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,189 +13,120 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger.factory;
+package org.rapidpm.dependencies.core.logger.factory
 
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import org.rapidpm.dependencies.core.logger.LogEvent;
-import org.rapidpm.dependencies.core.logger.LoggingService;
+import org.rapidpm.dependencies.core.logger.LogEvent
+import org.rapidpm.dependencies.core.logger.LoggingService
+import java.util.function.Supplier
+import java.util.logging.Level
 
 /**
- * <p>NoLogFactory class.</p>
+ *
+ * NoLogFactory class.
  *
  * @author svenruppert
  * @version $Id: $Id
  */
-public class NoLogFactory implements LoggerFactory {
-  final LoggingService noLogger = new NoLogger();
+class NoLogFactory : LoggerFactory {
+  internal val noLogger: LoggingService = NoLogger()
 
-  /** {@inheritDoc} */
-  @Override
-  public LoggingService getLogger(String name) {
-    return noLogger;
+  /** {@inheritDoc}  */
+  override fun getLogger(name: String): LoggingService {
+    return noLogger
   }
 
-  static class NoLogger implements LoggingService {
-    @Override
-    public void finest(String message) {
-    }
+  internal class NoLogger : LoggingService {
 
-    @Override
-    public void finest(String message , Throwable thrown) {
-    }
+    override val isFinestEnabled: Boolean
+      get() = false
 
-    @Override
-    public void finest(Throwable thrown) {
-    }
+    override val isFineEnabled: Boolean
+      get() = false
 
-    @Override
-    public void finest(Supplier<String> message) {
-    }
-    
-    @Override
-    public void finest(Supplier<String> message, Throwable thrown) {
-    }
-    
-    @Override
-    public void finest(String format, Object arg0) {}
+    override val isWarningEnabled: Boolean
+      get() = false
 
-    @Override
-    public void finest(String format, Object arg1, Object arg2) {}
+    override val isSevereEnabled: Boolean
+      get() = false
 
-    @Override
-    public void finest(String format, Object... arguments) {}
+    override val isInfoEnabled: Boolean
+      get() = false
 
-    @Override
-    public boolean isFinestEnabled() {
-      return false;
-    }
+    override val level: Level
+      get() = Level.OFF
 
-    @Override
-    public void fine(String message) {
-    }
+    override fun finest(message: String) {}
 
-    @Override
-    public boolean isFineEnabled() {
-      return false;
-    }
+    override fun finest(message: String, thrown: Throwable) {}
 
-    @Override
-    public boolean isWarningEnabled() {
-      return false;
-    }
-    
-    @Override
-    public boolean isSevereEnabled() {
-      return false;
-    }
-    
-    @Override
-    public boolean isInfoEnabled() {
-      return false;
-    }
-    
-    @Override
-    public void info(String message) {
-    }
+    override fun finest(thrown: Throwable) {}
 
-    @Override
-    public void info(Supplier<String> message) {     
-    }
-    
-    @Override
-    public void info(Supplier<String> message, Throwable thrown) {
-    }
-    
-    @Override
-    public void info(String message, Throwable thrown) {}
+    override fun finest(message: Supplier<String>) {}
 
-    @Override
-    public void info(String format, Object arg0) {}
+    override fun finest(message: Supplier<String>, thrown: Throwable) {}
 
-    @Override
-    public void info(String format, Object arg1, Object arg2) {}
+    override fun finest(format: String, arg0: Any) {}
 
-    @Override
-    public void info(String format, Object... arguments) {}
+    override fun finest(format: String, arg1: Any, arg2: Any) {}
 
-    @Override
-    public void severe(String message) {
-    }
+    override fun finest(format: String, vararg arguments: Any) {}
 
-    @Override
-    public void severe(Throwable thrown) {
-    }
+    override fun fine(message: String) {}
 
-    @Override
-    public void severe(String message , Throwable thrown) {
-    }
-    
-    @Override
-    public void severe(Supplier<String> message) {
-    }
-    
-    @Override
-    public void severe(Supplier<String> message, Throwable thrown) {
-    }
-    
-    @Override
-    public void severe(String format, Object arg0) {}
+    override fun info(message: String) {}
 
-    @Override
-    public void severe(String format, Object arg1, Object arg2) {}
+    override fun info(message: Supplier<String>) {}
 
-    @Override
-    public void severe(String format, Object... arguments) {}
+    override fun info(message: Supplier<String>, thrown: Throwable) {}
 
-    @Override
-    public void warning(String message) {
-    }
+    override fun info(message: String, thrown: Throwable) {}
 
-    @Override
-    public void warning(Throwable thrown) {
-    }
+    override fun info(format: String, arg0: Any) {}
 
-    @Override
-    public void warning(String message , Throwable thrown) {
-    }
+    override fun info(format: String, arg1: Any, arg2: Any) {}
 
-    @Override
-    public void warning(Supplier<String> message) {
-    }
-    
-    @Override
-    public void warning(Supplier<String> message, Throwable thrown) {
-    }
-    
-    @Override
-    public void warning(String format, Object arg0) {}
+    override fun info(format: String, vararg arguments: Any) {}
 
-    @Override
-    public void warning(String format, Object arg1, Object arg2) {}
+    override fun severe(message: String) {}
 
-    @Override
-    public void warning(String format, Object... arguments) {}
+    override fun severe(thrown: Throwable) {}
 
-    @Override
-    public void log(Level level , String message) {
-    }
+    override fun severe(message: String, thrown: Throwable) {}
 
-    @Override
-    public void log(Level level , String message , Throwable thrown) {
-    }
+    override fun severe(message: Supplier<String>) {}
 
-    @Override
-    public void log(LogEvent logEvent) {
-    }
+    override fun severe(message: Supplier<String>, thrown: Throwable) {}
 
-    @Override
-    public Level getLevel() {
-      return Level.OFF;
-    }
+    override fun severe(format: String, arg0: Any) {}
 
-    @Override
-    public boolean isLoggable(Level level) {
-      return false;
+    override fun severe(format: String, arg1: Any, arg2: Any) {}
+
+    override fun severe(format: String, vararg arguments: Any) {}
+
+    override fun warning(message: String) {}
+
+    override fun warning(thrown: Throwable) {}
+
+    override fun warning(message: String, thrown: Throwable) {}
+
+    override fun warning(message: Supplier<String>) {}
+
+    override fun warning(message: Supplier<String>, thrown: Throwable) {}
+
+    override fun warning(format: String, arg0: Any) {}
+
+    override fun warning(format: String, arg1: Any, arg2: Any) {}
+
+    override fun warning(format: String, vararg arguments: Any) {}
+
+    override fun log(level: Level, message: String) {}
+
+    override fun log(level: Level, message: String, thrown: Throwable?) {}
+
+    override fun log(logEvent: LogEvent<*>) {}
+
+    override fun isLoggable(level: Level): Boolean {
+      return false
     }
   }
 }

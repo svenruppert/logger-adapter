@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers;
+package org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers
+
 /**
  * Copyright (c) 2004-2011 QOS.ch All rights reserved.
  *
@@ -38,107 +39,99 @@ package org.rapidpm.dependencies.core.logger.tp.org.slf4j.helpers;
  * An internal utility class.
  *
  * @author Alexander Dorokhine
- * @author Ceki G&uuml;lc&uuml;
+ * @author Ceki Glc
  */
-public final class Util {
+object Util {
 
+  private var SECURITY_MANAGER: ClassContextSecurityManager? = null
+  private var SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED = false
 
-  private Util() {}
-
-  public static String safeGetSystemProperty(String key) {
-    if (key == null)
-      throw new IllegalArgumentException("null input");
-
-    String result = null;
-    try {
-      result = System.getProperty(key);
-    } catch (java.lang.SecurityException sm) {
-      ; // ignore
+  private val securityManager: ClassContextSecurityManager?
+    get() {
+      if (SECURITY_MANAGER != null)
+        return SECURITY_MANAGER
+      else if (SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED)
+        return null
+      else {
+        SECURITY_MANAGER = safeCreateSecurityManager()
+        SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED = true
+        return SECURITY_MANAGER
+      }
     }
-    return result;
-  }
-
-  public static boolean safeGetBooleanSystemProperty(String key) {
-    String value = safeGetSystemProperty(key);
-    if (value == null)
-      return false;
-    else
-      return value.equalsIgnoreCase("true");
-  }
-
-  /**
-   * In order to call {@link SecurityManager#getClassContext()}, which is a protected method, we add
-   * this wrapper which allows the method to be visible inside this package.
-   */
-  private static final class ClassContextSecurityManager extends SecurityManager {
-    @Override
-    protected Class<?>[] getClassContext() {
-      return super.getClassContext();
-    }
-  }
-
-  private static ClassContextSecurityManager SECURITY_MANAGER;
-  private static boolean SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED = false;
-
-  private static ClassContextSecurityManager getSecurityManager() {
-    if (SECURITY_MANAGER != null)
-      return SECURITY_MANAGER;
-    else if (SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED)
-      return null;
-    else {
-      SECURITY_MANAGER = safeCreateSecurityManager();
-      SECURITY_MANAGER_CREATION_ALREADY_ATTEMPTED = true;
-      return SECURITY_MANAGER;
-    }
-  }
-
-  private static ClassContextSecurityManager safeCreateSecurityManager() {
-    try {
-      return new ClassContextSecurityManager();
-    } catch (java.lang.SecurityException sm) {
-      return null;
-    }
-  }
 
   /**
    * Returns the name of the class which called the invoking method.
    *
    * @return the name of the class which called the invoking method.
    */
-  public static Class<?> getCallingClass() {
-    ClassContextSecurityManager securityManager = getSecurityManager();
-    if (securityManager == null)
-      return null;
-    Class<?>[] trace = securityManager.getClassContext();
-    String thisClassName = Util.class.getName();
+  // Advance until Util is found
+  // trace[i] = Util; trace[i+1] = caller; trace[i+2] = caller's caller
+  val callingClass: Class<*>?
+    get() {
+      val securityManager = securityManager ?: return null
+      val trace = securityManager.classContext
+      val thisClassName = Util::class.java.name
+      var i: Int
+      i = 0
+      while (i < trace.size) {
+        if (thisClassName == trace[i].name)
+          break
+        i++
+      }
+      if (i >= trace.size || i + 2 >= trace.size) {
+        throw IllegalStateException(
+            "Failed to find org.slf4j.helpers.Util or its caller in the stack; " + "this should not happen")
+      }
 
-    // Advance until Util is found
-    int i;
-    for (i = 0; i < trace.length; i++) {
-      if (thisClassName.equals(trace[i].getName()))
-        break;
+      return trace[i + 2]
     }
 
-    // trace[i] = Util; trace[i+1] = caller; trace[i+2] = caller's caller
-    if (i >= trace.length || i + 2 >= trace.length) {
-      throw new IllegalStateException(
-          "Failed to find org.slf4j.helpers.Util or its caller in the stack; "
-              + "this should not happen");
+  fun safeGetSystemProperty(key: String?): String? {
+    if (key == null)
+      throw IllegalArgumentException("null input")
+
+    var result: String? = null
+    try {
+      result = System.getProperty(key)
+    } catch (sm: java.lang.SecurityException) {
+    }// ignore
+
+    return result
+  }
+
+  fun safeGetBooleanSystemProperty(key: String): Boolean {
+    val value = safeGetSystemProperty(key)
+    return value?.equals("true", ignoreCase = true) ?: false
+  }
+
+  /**
+   * In order to call [SecurityManager.getClassContext], which is a protected method, we add
+   * this wrapper which allows the method to be visible inside this package.
+   */
+  private class ClassContextSecurityManager : SecurityManager() {
+    public override fun getClassContext(): Array<Class<*>> {
+      return super.getClassContext()
+    }
+  }
+
+  private fun safeCreateSecurityManager(): ClassContextSecurityManager? {
+    try {
+      return ClassContextSecurityManager()
+    } catch (sm: java.lang.SecurityException) {
+      return null
     }
 
-    return trace[i + 2];
   }
 
-  static final public void report(String msg, Throwable t) {
-    System.err.println(msg);
-    System.err.println("Reported exception:");
-    t.printStackTrace();
+  fun report(msg: String, t: Throwable) {
+    System.err.println(msg)
+    System.err.println("Reported exception:")
+    t.printStackTrace()
   }
 
-  static final public void report(String msg) {
-    System.err.println("SLF4J: " + msg);
+  fun report(msg: String) {
+    System.err.println("SLF4J: $msg")
   }
-
 
 
 }

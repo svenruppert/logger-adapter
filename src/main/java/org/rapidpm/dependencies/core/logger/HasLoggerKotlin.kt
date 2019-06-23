@@ -15,7 +15,10 @@
  */
 package org.rapidpm.dependencies.core.logger
 
-import java.util.*
-import java.util.logging.LogRecord
 
-class LogEvent<T>(val logRecord: LogRecord, member: T) : EventObject(member)
+interface HasLoggerKotlin {
+  //@JvmDefault still experimental
+  fun logger(): LoggingService {
+    return Logger.getLogger(javaClass)
+  }
+}

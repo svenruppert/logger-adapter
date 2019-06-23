@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,111 +13,117 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger;
+package org.rapidpm.dependencies.core.logger
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor
+import java.lang.reflect.InvocationTargetException
 
-import org.rapidpm.dependencies.core.logger.factory.LoggerFactory;
-import org.rapidpm.dependencies.core.logger.factory.NoLogFactory;
-import org.rapidpm.dependencies.core.logger.factory.StandardLoggerFactory;
+import org.rapidpm.dependencies.core.logger.factory.LoggerFactory
+import org.rapidpm.dependencies.core.logger.factory.NoLogFactory
+import org.rapidpm.dependencies.core.logger.factory.StandardLoggerFactory
 
 /**
- * <p>Logger class.</p>
+ *
+ * Logger class.
  *
  * @author svenruppert
  * @version $Id: $Id
  */
-public class Logger {
+object Logger {
 
-  /** Constant <code>RAPIDPM_LOGGING_TYPE="rapidpm.logging.type"</code> */
-  public static final String RAPIDPM_LOGGING_TYPE = "rapidpm.logging.type";
-  /** Constant <code>RAPIDPM_LOGGING_CLASS="rapidpm.logging.class"</code> */
-  public static final String RAPIDPM_LOGGING_CLASS = "rapidpm.logging.class";
+  /** Constant `RAPIDPM_LOGGING_TYPE="rapidpm.logging.type"`  */
+  val RAPIDPM_LOGGING_TYPE = "rapidpm.logging.type"
+  /** Constant `RAPIDPM_LOGGING_CLASS="rapidpm.logging.class"`  */
+  val RAPIDPM_LOGGING_CLASS = "rapidpm.logging.class"
 
-  private static volatile LoggerFactory loggerFactory;
-  private static final Object FACTORY_LOCK = new Object();
+  @Volatile
+  private var loggerFactory: LoggerFactory? = null
+  private val FACTORY_LOCK = Any()
 
-  private Logger() {
+  /**
+   *
+   * getLogger.
+   *
+   * @param clazz a [Class] object.
+   * @return a [org.rapidpm.dependencies.core.logger.LoggingService] object.
+   */
+  @JvmStatic
+  fun getLogger(clazz: Class<*>): LoggingService {
+    return getLogger(clazz.name)
   }
 
   /**
-   * <p>getLogger.</p>
    *
-   * @param clazz a {@link Class} object.
-   * @return a {@link org.rapidpm.dependencies.core.logger.LoggingService} object.
+   * getLogger.
+   *
+   * @param name a [String] object.
+   * @return a [org.rapidpm.dependencies.core.logger.LoggingService] object.
    */
-  public static LoggingService getLogger(Class clazz) {
-    return getLogger(clazz.getName());
-  }
+  @JvmStatic
+  fun getLogger(name: String): LoggingService {
 
-  /**
-   * <p>getLogger.</p>
-   *
-   * @param name a {@link String} object.
-   * @return a {@link org.rapidpm.dependencies.core.logger.LoggingService} object.
-   */
-  public static LoggingService getLogger(String name) {
-    //noinspection DoubleCheckedLocking
-    if (loggerFactory == null) {
-      //noinspection SynchronizationOnStaticField
-      synchronized (FACTORY_LOCK) {
+    when (loggerFactory) {
+      null -> synchronized(FACTORY_LOCK) {
         if (loggerFactory == null) {
-          String loggerType = System.getProperty(RAPIDPM_LOGGING_TYPE);
-          loggerFactory = newLoggerFactory(loggerType);
+          val loggerType = System.getProperty(RAPIDPM_LOGGING_TYPE)
+          loggerFactory = newLoggerFactory(loggerType)
         }
       }
     }
-    return loggerFactory.getLogger(name);
+    return loggerFactory!!.getLogger(name)
   }
 
   /**
-   * <p>newLoggerFactory.</p>
    *
-   * @param loggerType a {@link String} object.
-   * @return a {@link org.rapidpm.dependencies.core.logger.factory.LoggerFactory} object.
+   * newLoggerFactory.
+   *
+   * @param loggerType a [String] object.
+   * @return a [org.rapidpm.dependencies.core.logger.factory.LoggerFactory] object.
    */
-  public static LoggerFactory newLoggerFactory(String loggerType) {
-    LoggerFactory loggerFactory = null;
-    String loggerClass = System.getProperty(RAPIDPM_LOGGING_CLASS);
+  fun newLoggerFactory(loggerType: String?): LoggerFactory {
+    var loggerFactory: LoggerFactory? = null
+    val loggerClass = System.getProperty(RAPIDPM_LOGGING_CLASS)
     if (loggerClass != null) {
-      loggerFactory = loadLoggerFactory(loggerClass);
+      loggerFactory = loadLoggerFactory(loggerClass)
     }
 
-    if (loggerFactory == null) {
-      if (loggerType != null) {
-        if ("log4j".equals(loggerType)) {
-          loggerFactory = loadLoggerFactory("org.rapidpm.dependencies.core.logger.factory.Log4jFactory");
-        } else if ("log4j2".equals(loggerType)) {
-          loggerFactory = loadLoggerFactory("org.rapidpm.dependencies.core.logger.factory.Log4j2Factory");
-        } else if ("slf4j".equals(loggerType)) {
-          loggerFactory = loadLoggerFactory("org.rapidpm.dependencies.core.logger.factory.Slf4jFactory");
-        } else if ("jdk".equals(loggerType)) {
-          loggerFactory = new StandardLoggerFactory();
-        } else if ("none".equals(loggerType)) {
-          loggerFactory = new NoLogFactory();
-        }
+    if (loggerFactory == null && loggerType != null) {
+      when (loggerType) {
+        "log4j" -> loggerFactory = loadLoggerFactory("org.rapidpm.dependencies.core.logger.factory.Log4jFactory")
+        "log4j2" -> loggerFactory = loadLoggerFactory("org.rapidpm.dependencies.core.logger.factory.Log4j2Factory")
+        "slf4j" -> loggerFactory = loadLoggerFactory("org.rapidpm.dependencies.core.logger.factory.Slf4jFactory")
+        "jdk" -> loggerFactory = StandardLoggerFactory()
+        "none" -> loggerFactory = NoLogFactory()
       }
     }
 
     if (loggerFactory == null) {
-      loggerFactory = new StandardLoggerFactory();
+      loggerFactory = StandardLoggerFactory()
     }
-    return loggerFactory;
+    return loggerFactory
   }
 
-  private static LoggerFactory loadLoggerFactory(String className) {
+  private fun loadLoggerFactory(className: String): LoggerFactory? {
     try {
-      final Class<?> forName = Class.forName(className);
-      final Constructor<?> declaredConstructor = forName.getDeclaredConstructor();
-      return (LoggerFactory) declaredConstructor.newInstance();
-    } catch (ClassNotFoundException
-        | InstantiationException
-        | IllegalAccessException
-        | InvocationTargetException
-        | NoSuchMethodException e) {
-      e.printStackTrace();
-      return null;
+      val forName = Class.forName(className)
+      val declaredConstructor = forName.getDeclaredConstructor()
+      return declaredConstructor.newInstance() as LoggerFactory
+    } catch (e: ClassNotFoundException) {
+      e.printStackTrace()
+      return null
+    } catch (e: InstantiationException) {
+      e.printStackTrace()
+      return null
+    } catch (e: IllegalAccessException) {
+      e.printStackTrace()
+      return null
+    } catch (e: InvocationTargetException) {
+      e.printStackTrace()
+      return null
+    } catch (e: NoSuchMethodException) {
+      e.printStackTrace()
+      return null
     }
+
   }
 }

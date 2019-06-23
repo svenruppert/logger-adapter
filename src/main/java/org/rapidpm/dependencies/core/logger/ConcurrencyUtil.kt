@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,37 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger;
+package org.rapidpm.dependencies.core.logger
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentMap
 
 /**
- * <p>ConcurrencyUtil class.</p>
+ *
+ * ConcurrencyUtil class.
  *
  * @author svenruppert
  * @version $Id: $Id
  */
-public class ConcurrencyUtil {
-  private ConcurrencyUtil() {
-  }
+object ConcurrencyUtil {
 
   /**
-   * <p>getOrPutIfAbsent.</p>
    *
-   * @param map a {@link ConcurrentMap} object.
+   * getOrPutIfAbsent.
+   *
+   * @param map a [ConcurrentMap] object.
    * @param key a K object.
-   * @param func a {@link org.rapidpm.dependencies.core.logger.ConstructorFunction} object.
+   * @param func a [org.rapidpm.dependencies.core.logger.ConstructorFunction] object.
    * @param <K> a K object.
    * @param <V> a V object.
    * @return a V object.
-   */
-  public static <K, V> V getOrPutIfAbsent(ConcurrentMap<K, V> map , K key , ConstructorFunction<K, V> func) {
-    V value = map.get(key);
-    if (value == null) {
-      value = func.createNew(key);
-      V current = map.putIfAbsent(key , value);
-      value = current == null ? value : current;
+  </V></K> */
+  fun <K, V> getOrPutIfAbsent(map: ConcurrentMap<K, V>,
+                              key: K,
+                              func: ConstructorFunction<K, V>): V {
+//    var value: V? = map[key]
+    if (map[key] == null) {
+      val value = func.createNew(key)
+      val current = (map as MutableMap<K, V>).putIfAbsent(key, value)
+      return current ?: value
     }
-    return value;
+    return map[key]!!
   }
 }

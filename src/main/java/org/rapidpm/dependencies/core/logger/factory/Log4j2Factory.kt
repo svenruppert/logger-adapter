@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger.factory;
+package org.rapidpm.dependencies.core.logger.factory
 
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
+import java.util.logging.Level
+import java.util.logging.LogRecord
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.spi.ExtendedLogger;
-import org.rapidpm.dependencies.core.logger.AbstractLogger;
-import org.rapidpm.dependencies.core.logger.LogEvent;
-import org.rapidpm.dependencies.core.logger.LoggerFactorySupport;
-import org.rapidpm.dependencies.core.logger.LoggingService;
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.spi.ExtendedLogger
+import org.rapidpm.dependencies.core.logger.AbstractLogger
+import org.rapidpm.dependencies.core.logger.LogEvent
+import org.rapidpm.dependencies.core.logger.LoggerFactorySupport
+import org.rapidpm.dependencies.core.logger.LoggingService
 
 /**
  * Logging to Log4j 2.x.
@@ -31,67 +31,62 @@ import org.rapidpm.dependencies.core.logger.LoggingService;
  * @author svenruppert
  * @version $Id: $Id
  */
-public class Log4j2Factory extends LoggerFactorySupport {
+class Log4j2Factory : LoggerFactorySupport() {
 
-  private static final String FQCN = Log4j2Logger.class.getName();
-
-  /** {@inheritDoc} */
-  protected LoggingService createLogger(String name) {
-    return new Log4j2Logger(LogManager.getContext().getLogger(name));
+  /** {@inheritDoc}  */
+  override fun createLogger(name: String): LoggingService {
+    return Log4j2Logger(LogManager.getContext().getLogger(name))
   }
 
-  static class Log4j2Logger extends AbstractLogger {
-    private final ExtendedLogger logger;
+  internal class Log4j2Logger(private val logger: ExtendedLogger) : AbstractLogger() {
 
-    public Log4j2Logger(ExtendedLogger logger) {
-      this.logger = logger;
+    override val level: Level
+      get() = when {
+        logger.isTraceEnabled -> Level.FINEST
+        logger.isDebugEnabled -> Level.FINE
+        logger.isInfoEnabled -> Level.INFO
+        logger.isWarnEnabled -> Level.WARNING
+        logger.isErrorEnabled -> Level.SEVERE
+        logger.isFatalEnabled -> Level.SEVERE
+        else -> Level.OFF
+      }
+
+    override fun log(logEvent: LogEvent<*>) {
+      val logRecord = logEvent.logRecord
+      val level = logEvent.logRecord.level
+      val message = logRecord.message
+      val thrown = logRecord.thrown
+      log(level, message, thrown)
     }
 
-    @Override
-    public void log(LogEvent logEvent) {
-      LogRecord logRecord = logEvent.getLogRecord();
-      Level level = logEvent.getLogRecord().getLevel();
-      String message = logRecord.getMessage();
-      Throwable thrown = logRecord.getThrown();
-      log(level , message , thrown);
+    override fun log(level: Level, message: String) {
+      logger.logIfEnabled(FQCN, toLog4j2Level(level), null, message)
     }
 
-    @Override
-    public void log(Level level , String message) {
-      logger.logIfEnabled(FQCN , toLog4j2Level(level) , null , message);
+    override fun log(level: Level, message: String, thrown: Throwable?) {
+      logger.logIfEnabled(FQCN, toLog4j2Level(level), null, message, thrown)
     }
 
-    @Override
-    public void log(Level level , String message , Throwable thrown) {
-      logger.logIfEnabled(FQCN , toLog4j2Level(level) , null , message , thrown);
+    override fun isLoggable(level: Level): Boolean {
+      return level !== Level.OFF && logger.isEnabled(toLog4j2Level(level), null)
     }
 
-    @Override
-    public Level getLevel() {
-      return logger.isTraceEnabled() ? Level.FINEST
-                                     : logger.isDebugEnabled() ? Level.FINE
-                                                               : logger.isInfoEnabled() ? Level.INFO
-                                                                                        : logger.isWarnEnabled() ? Level.WARNING
-                                                                                                                 : logger.isErrorEnabled() ? Level.SEVERE
-                                                                                                                                           : logger.isFatalEnabled() ? Level.SEVERE
-                                                                                                                                                                     : Level.OFF;
+    private fun toLog4j2Level(level: Level): org.apache.logging.log4j.Level {
+      return when {
+        level === Level.FINEST -> org.apache.logging.log4j.Level.TRACE
+        level === Level.FINE -> org.apache.logging.log4j.Level.DEBUG
+        level === Level.INFO -> org.apache.logging.log4j.Level.INFO
+        level === Level.WARNING -> org.apache.logging.log4j.Level.WARN
+        level === Level.SEVERE -> org.apache.logging.log4j.Level.ERROR
+        level === Level.FINER -> org.apache.logging.log4j.Level.DEBUG
+        level === Level.CONFIG -> org.apache.logging.log4j.Level.INFO
+        level === Level.OFF -> org.apache.logging.log4j.Level.OFF
+        else -> org.apache.logging.log4j.Level.INFO
+      }
     }
+  }
 
-    @Override
-    public boolean isLoggable(Level level) {
-      return level != Level.OFF && logger.isEnabled(toLog4j2Level(level) , null);
-    }
-
-    private static org.apache.logging.log4j.Level toLog4j2Level(Level level) {
-      return level == Level.FINEST ? org.apache.logging.log4j.Level.TRACE
-                                   : level == Level.FINE ? org.apache.logging.log4j.Level.DEBUG
-                                                         : level == Level.INFO ? org.apache.logging.log4j.Level.INFO
-                                                                               : level == Level.WARNING ? org.apache.logging.log4j.Level.WARN
-                                                                                                        : level == Level.SEVERE ? org.apache.logging.log4j.Level.ERROR
-                                                                                                                                : level == Level.FINER ? org.apache.logging.log4j.Level.DEBUG
-                                                                                                                                                       : level == Level.CONFIG ? org.apache.logging.log4j.Level.INFO
-                                                                                                                                                                               : level == Level.OFF ? org.apache.logging.log4j.Level.OFF
-                                                                                                                                                                                                    : org.apache.logging.log4j.Level.INFO;
-    }
+  companion object {
+    private val FQCN = Log4j2Logger::class.java.name
   }
 }

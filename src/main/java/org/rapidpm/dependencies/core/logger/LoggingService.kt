@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,205 +13,110 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rapidpm.dependencies.core.logger;
+package org.rapidpm.dependencies.core.logger
 
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
+import java.util.function.Supplier
+import java.util.logging.Level
+import java.util.logging.LogRecord
 
 /**
- * <p>LoggingService interface.</p>
+ *
+ * LoggingService interface.
  *
  * @author svenruppert
  * @version $Id: $Id
  */
-public interface LoggingService {
+interface LoggingService {
+
+  val isFinestEnabled: Boolean
+
+  val isFineEnabled: Boolean
+
+  val level: Level
+
+  val isWarningEnabled: Boolean
+
+  val isSevereEnabled: Boolean
+
+  val isInfoEnabled: Boolean
 
 
-  /**
-   * <p>finest.</p>
-   *
-   * @param message a {@link String} object.
-   */
-  void finest(String message);
+  fun finest(message: String)
 
-  /**
-   * <p>finest.</p>
-   *
-   * @param thrown a {@link Throwable} object.
-   */
-  void finest(Throwable thrown);
+  fun finest(thrown: Throwable)
 
-  /**
-   * <p>finest.</p>
-   *
-   * @param message a {@link String} object.
-   * @param thrown a {@link Throwable} object.
-   */
-  void finest(String message , Throwable thrown);
-  
-  void finest(Supplier<String> message);
-  
-  void finest(Supplier<String> message, Throwable thrown);
-  
-  void finest(String format, Object arg0);
-  
-  void finest(String format, Object arg1, Object arg2);
-  
-  void finest(String format, Object... arguments);
+  fun finest(message: String, thrown: Throwable)
 
-  /**
-   * <p>isFinestEnabled.</p>
-   *
-   * @return a boolean.
-   */
-  boolean isFinestEnabled();
+  fun finest(message: Supplier<String>)
 
-  /**
-   * <p>fine.</p>
-   *
-   * @param message a {@link String} object.
-   */
-  void fine(String message);
+  fun finest(message: Supplier<String>, thrown: Throwable)
 
-  /**
-   * <p>isFineEnabled.</p>
-   *
-   * @return a boolean.
-   */
-  boolean isFineEnabled();
+  fun finest(format: String, arg0: Any)
 
-  /**
-   * <p>info.</p>
-   *
-   * @param message a {@link String} object.
-   */
-  void info(String message);
+  fun finest(format: String, arg1: Any, arg2: Any)
 
-  void info(Supplier<String> message);
-  
-  void info(Supplier<String> message, Throwable thrown);
-  
-  void info(String message , Throwable thrown);
-  
-  void info(String format, Object arg0);
-  
-  void info(String format, Object arg1, Object arg2);
-  
-  void info(String format, Object... arguments);
-  /**
-   * <p>warning.</p>
-   *
-   * @param message a {@link String} object.
-   */
-  void warning(String message);
+  fun finest(format: String, vararg arguments: Any)
 
-  /**
-   * <p>warning.</p>
-   *
-   * @param thrown a {@link Throwable} object.
-   */
-  void warning(Throwable thrown);
+  fun fine(message: String)
 
-  /**
-   * <p>warning.</p>
-   *
-   * @param message a {@link String} object.
-   * @param thrown a {@link Throwable} object.
-   */
-  void warning(String message , Throwable thrown);
+  fun info(message: String)
 
-  void warning(Supplier<String> message);
-  
-  void warning(Supplier<String> message, Throwable thrown);
-  
-  void warning(String format, Object arg0);
-  
-  void warning(String format, Object arg1, Object arg2);
-  
-  void warning(String format, Object... arguments);
-  
-  /**
-   * <p>severe.</p>
-   *
-   * @param message a {@link String} object.
-   */
-  void severe(String message);
+  fun info(message: Supplier<String>)
 
-  /**
-   * <p>severe.</p>
-   *
-   * @param thrown a {@link Throwable} object.
-   */
-  void severe(Throwable thrown);
+  fun info(message: Supplier<String>, thrown: Throwable)
 
-  void severe(Supplier<String> message);
-  
-  void severe(Supplier<String> message, Throwable thrown);
-  /**
-   * <p>severe.</p>
-   *
-   * @param message a {@link String} object.
-   * @param thrown a {@link Throwable} object.
-   */
-  void severe(String message , Throwable thrown);
-  
-  void severe(String format, Object arg0);
-  
-  void severe(String format, Object arg1, Object arg2);
-  
-  void severe(String format, Object... arguments);
-  
-  /**
-   * <p>log.</p>
-   *
-   * @param level a {@link Level} object.
-   * @param message a {@link String} object.
-   */
-  void log(Level level , String message);
+  fun info(message: String, thrown: Throwable)
 
-  /**
-   * <p>log.</p>
-   *
-   * @param level a {@link Level} object.
-   * @param message a {@link String} object.
-   * @param thrown a {@link Throwable} object.
-   */
-  void log(Level level , String message , Throwable thrown);
+  fun info(format: String, arg0: Any)
 
-//  void log(LogEvent logEvent);
-  /**
-   * <p>log.</p>
-   *
-   * @param logEvent a {@link org.rapidpm.dependencies.core.logger.LogEvent} object.
-   */
-  default void log(LogEvent logEvent) {
-    LogRecord logRecord = logEvent.getLogRecord();
-    Level level = logEvent.getLogRecord().getLevel();
-    String message = logRecord.getMessage();
-    Throwable thrown = logRecord.getThrown();
-    log(level, message, thrown);
+  fun info(format: String, arg1: Any, arg2: Any)
+
+  fun info(format: String, vararg arguments: Any)
+
+  fun warning(message: String)
+
+  fun warning(thrown: Throwable)
+
+  fun warning(message: String, thrown: Throwable)
+
+  fun warning(message: Supplier<String>)
+
+  fun warning(message: Supplier<String>, thrown: Throwable)
+
+  fun warning(format: String, arg0: Any)
+
+  fun warning(format: String, arg1: Any, arg2: Any)
+
+  fun warning(format: String, vararg arguments: Any)
+
+  fun severe(message: String)
+
+  fun severe(thrown: Throwable)
+
+  fun severe(message: Supplier<String>)
+
+  fun severe(message: Supplier<String>, thrown: Throwable)
+
+  fun severe(message: String, thrown: Throwable)
+
+  fun severe(format: String, arg0: Any)
+
+  fun severe(format: String, arg1: Any, arg2: Any)
+
+  fun severe(format: String, vararg arguments: Any)
+
+  fun log(level: Level, message: String)
+
+  fun log(level: Level, message: String, thrown: Throwable?)
+
+  fun log(logEvent: LogEvent<*>) {
+    val logRecord = logEvent.logRecord
+    val level = logEvent.logRecord.level
+    val message = logRecord.message
+    val thrown = logRecord.thrown
+    log(level, message, thrown)
   }
 
-  /**
-   * <p>getLevel.</p>
-   *
-   * @return a {@link Level} object.
-   */
-  Level getLevel();
-
-  /**
-   * <p>isLoggable.</p>
-   *
-   * @param level a {@link Level} object.
-   * @return a boolean.
-   */
-  boolean isLoggable(Level level);
-
-  boolean isWarningEnabled();
-
-  boolean isSevereEnabled();
-
-  boolean isInfoEnabled();
+  fun isLoggable(level: Level): Boolean
 
 }
