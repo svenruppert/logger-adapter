@@ -23,7 +23,7 @@
 
   <groupId>org.rapidpm</groupId>
   <artifactId>rapidpm-logger-adapter</artifactId>
-  <version>01.00.03-RPM-SNAPSHOT</version>
+  <version>01.00.03-RPM</version>
 
   <inceptionYear>2017</inceptionYear>
   <organization>
@@ -189,7 +189,7 @@
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
-        <version>1.3.31</version>
+        <version>${kotlin.version}</version>
         <executions>
           <execution>
             <id>compile</id>
