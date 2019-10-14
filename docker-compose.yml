@@ -24,10 +24,10 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - $PWD/:/usr/src/mymaven
-      - ~/.m2/settings.xml:/root/.m2/settings.xml
+      - ~/.m2/settings.xml.backup:/root/.m2/settings.xml.backup
       - ~/.gnupg/:/root/.gnupg/
     working_dir: /usr/src/mymaven
     #    command: 'mvn help:active-profiles
     command: 'mvn clean deploy
                     -P_release
-                    -Dmaven.test.skip=true '
+                    -Dmaven.test.skip=false '
