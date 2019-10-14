@@ -85,6 +85,13 @@
       <url>https://jitpack.io</url>
     </repository>
     <repository>
+      <id>bintray</id>
+      <url>https://dl.bintray.com/sven%20ruppert/maven</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>central</id>
       <url>https://repo1.maven.org/maven2/</url>
       <snapshots>
@@ -261,13 +268,10 @@
 
       <distributionManagement>
         <repository>
-          <id>sonatype-nexus</id>
-          <url>${sonatype-nexus-url}</url>
+          <id>bintray-SvenRuppert-maven</id>
+          <name>bintray-SvenRuppert-maven</name>
+          <url>https://api.bintray.com/maven/sven%20ruppert/maven/org.rapidpm.logger-adapter/;publish=1</url>
         </repository>
-        <snapshotRepository>
-          <id>sonatype-nexus-snapshots</id>
-          <url>${sonatype-nexus-snapshots-url}</url>
-        </snapshotRepository>
       </distributionManagement>
 
       <build>
