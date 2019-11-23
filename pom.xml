@@ -23,7 +23,9 @@
 
   <groupId>org.rapidpm</groupId>
   <artifactId>rapidpm-logger-adapter</artifactId>
-  <version>01.00.05-RPM</version>
+  <version>01.00.06-RPM</version>
+  <packaging>jar</packaging>
+
 
   <inceptionYear>2017</inceptionYear>
   <organization>
@@ -76,15 +78,36 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <kotlin.version>1.3.50</kotlin.version>
+    <kotlin.version>1.3.60</kotlin.version>
+
+    <deploy-repo-url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</deploy-repo-url>
   </properties>
+
+<!--  <distributionManagement>-->
+<!--    <repository>-->
+<!--      <id>deploy-repo-maven</id>-->
+<!--      <name>deploy-repo-maven</name>-->
+<!--      <url>https://api.bintray.com/maven/rapidpm/maven/rapidpm-logger-adapter/;publish=1</url>-->
+<!--    </repository>-->
+<!--  </distributionManagement>-->
+  <distributionManagement>
+    <repository>
+      <id>deploy-repo-maven</id>
+      <name>deploy-repo-maven</name>
+      <url>${deploy-repo-url}</url>
+    </repository>
+    <!--        <snapshotRepository>-->
+    <!--          <id>deploy-repo-maven-snapshots</id>-->
+    <!--          <name>deploy-repo-maven-snapshots</name>-->
+    <!--          <url>${deploy-repo-snapshots-url}</url>-->
+    <!--        </snapshotRepository>-->
+  </distributionManagement>
 
 
   <repositories>
     <repository>
-      <id>bintray-svenruppert-rapidpm</id>
-      <name>bintray</name>
-      <url>https://svenruppert.bintray.com/rapidpm</url>
+      <id>bintray-rapidpm</id>
+      <url>https://dl.bintray.com/rapidpm/maven</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -107,9 +130,8 @@
       </snapshots>
     </pluginRepository>
     <pluginRepository>
-      <id>bintray-svenruppert-rapidpm</id>
-      <name>bintray-plugins</name>
-      <url>https://svenruppert.bintray.com/rapidpm</url>
+      <id>bintray-rapidpm</id>
+      <url>https://dl.bintray.com/rapidpm/maven</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -269,15 +291,6 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
-
-      <distributionManagement>
-        <repository>
-          <id>bintray-svenruppert-rapidpm</id>
-          <name>svenruppert-rapidpm</name>
-          <url>https://api.bintray.com/maven/svenruppert/rapidpm/logger-adapter/;publish=1</url>
-        </repository>
-      </distributionManagement>
-
       <build>
         <plugins>
           <plugin>
@@ -299,20 +312,20 @@
               <destDir>target/doc/apidoc/</destDir>
             </configuration>
           </plugin>
-          <!--          <plugin>-->
-          <!--            <groupId>org.apache.maven.plugins</groupId>-->
-          <!--            <artifactId>maven-gpg-plugin</artifactId>-->
-          <!--            <version>1.6</version>-->
-          <!--            <executions>-->
-          <!--              <execution>-->
-          <!--                <id>sign-artifacts</id>-->
-          <!--                <phase>verify</phase>-->
-          <!--                <goals>-->
-          <!--                  <goal>sign</goal>-->
-          <!--                </goals>-->
-          <!--              </execution>-->
-          <!--            </executions>-->
-          <!--          </plugin>-->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>com.mycila</groupId>
             <artifactId>license-maven-plugin</artifactId>

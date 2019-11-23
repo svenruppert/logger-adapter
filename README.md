@@ -3,13 +3,27 @@ A Core Java Logger Adapter that will give you the possibility to write Logger in
 code. 
 
 ## Status
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter)
-[![Release](https://jitpack.io/v/svenruppert/logger-adapter.svg)](https://jitpack.io/#svenruppert/logger-adapter)
 
-[![](https://jitci.com/gh/svenruppert/logger-adapter/svg)](https://jitci.com/gh/svenruppert/logger-adapter)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.rapidpm/rapidpm-logger-adapter)
 
 ![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=security_rating)
 ![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=sqale_rating)
+
+## Repositories
+This is deployed to Bintray.
+If your project is using **rapidpm-dependencies** as parent already, this is included.
+If you are using this independently, you need to add the repository to your **pom.xml**
+
+```xml
+    <repository>
+      <id>bintray-svenruppert-rapidpm</id>
+      <name>bintray</name>
+      <url>https://svenruppert.bintray.com/rapidpm</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+```
 
 ## JDK8 or JDK9 and above
 I compiled this with the Open JDK8.
