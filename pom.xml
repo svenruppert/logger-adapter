@@ -72,35 +72,30 @@
 
   <properties>
     <!--<maven.compiler.release>11</maven.compiler.release> &lt;!&ndash;release makes source and target&ndash;&gt;-->
-    <maven.compiler.source>8</maven.compiler.source> <!--redundant, but IntelliJ doesn't-->
-    <maven.compiler.target>8</maven.compiler.target> <!--use release when importing-->
+    <maven.compiler.source>1.8</maven.compiler.source> <!--redundant, but IntelliJ doesn't-->
+    <maven.compiler.target>1.8</maven.compiler.target> <!--use release when importing-->
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <kotlin.version>1.3.60</kotlin.version>
 
-    <deploy-repo-url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</deploy-repo-url>
+    <deploy-repo-url>http://repo.sven-ruppert.de/repository/maven-releases/</deploy-repo-url>
+    <deploy-repo-snapshots-url>http://repo.sven-ruppert.de/repository/maven-snapshots/</deploy-repo-snapshots-url>
+<!--    <deploy-repo-url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</deploy-repo-url>-->
   </properties>
 
-<!--  <distributionManagement>-->
-<!--    <repository>-->
-<!--      <id>deploy-repo-maven</id>-->
-<!--      <name>deploy-repo-maven</name>-->
-<!--      <url>https://api.bintray.com/maven/rapidpm/maven/rapidpm-logger-adapter/;publish=1</url>-->
-<!--    </repository>-->
-<!--  </distributionManagement>-->
   <distributionManagement>
     <repository>
       <id>deploy-repo-maven</id>
       <name>deploy-repo-maven</name>
       <url>${deploy-repo-url}</url>
     </repository>
-    <!--        <snapshotRepository>-->
-    <!--          <id>deploy-repo-maven-snapshots</id>-->
-    <!--          <name>deploy-repo-maven-snapshots</name>-->
-    <!--          <url>${deploy-repo-snapshots-url}</url>-->
-    <!--        </snapshotRepository>-->
+    <snapshotRepository>
+      <id>deploy-repo-maven-snapshots</id>
+      <name>deploy-repo-maven-snapshots</name>
+      <url>${deploy-repo-snapshots-url}</url>
+    </snapshotRepository>
   </distributionManagement>
 
 
