@@ -15,15 +15,14 @@
  */
 package org.rapidpm.dependencies.core.logger.factory
 
-import java.util.logging.Level
-import java.util.logging.LogRecord
 
-import org.apache.log4j.Logger
-import org.apache.log4j.spi.LoggingEvent
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.rapidpm.dependencies.core.logger.AbstractLogger
 import org.rapidpm.dependencies.core.logger.LogEvent
 import org.rapidpm.dependencies.core.logger.LoggerFactorySupport
 import org.rapidpm.dependencies.core.logger.LoggingService
+import java.util.logging.Level
 
 /**
  *
@@ -36,7 +35,7 @@ class Log4jFactory : LoggerFactorySupport(), LoggerFactory {
 
   /** {@inheritDoc}  */
   override fun createLogger(name: String): LoggingService {
-    val l = Logger.getLogger(name)
+    val l = LogManager.getLogger(name)
     return Log4jLogger(l)
   }
 
@@ -57,7 +56,7 @@ class Log4jFactory : LoggerFactorySupport(), LoggerFactory {
     }
 
     override fun isLoggable(level: Level): Boolean {
-      return level !== Level.OFF && logger.isEnabledFor(toLog4jLevel(level))
+      return level !== Level.OFF && logger.isEnabled(toLog4jLevel(level))
     }
 
     override fun log(logEvent: LogEvent<*>) {
@@ -66,36 +65,36 @@ class Log4jFactory : LoggerFactorySupport(), LoggerFactory {
         return
       }
       val name = logEvent.logRecord.loggerName
-      val logger = org.apache.log4j.Logger.getLogger(name)
+      val logger = LogManager.getLogger(name)
       val level = toLog4jLevel(logRecord.level)
       val message = logRecord.message
       val throwable = logRecord.thrown
-      logger.callAppenders(LoggingEvent(name, logger, level, message, throwable))
+      logger.log(level,message, throwable )
     }
 
-    private fun toLog4jLevel(level: Level): org.apache.log4j.Level {
+    private fun toLog4jLevel(level: Level): org.apache.logging.log4j.Level {
       return when {
-        level === Level.FINEST -> org.apache.log4j.Level.TRACE
-        level === Level.FINE -> org.apache.log4j.Level.DEBUG
-        level === Level.INFO -> org.apache.log4j.Level.INFO
-        level === Level.WARNING -> org.apache.log4j.Level.WARN
-        level === Level.SEVERE -> org.apache.log4j.Level.ERROR
-        level === Level.CONFIG -> org.apache.log4j.Level.INFO
-        level === Level.FINER -> org.apache.log4j.Level.DEBUG
-        level === Level.OFF -> org.apache.log4j.Level.OFF
-        else -> org.apache.log4j.Level.INFO
+        level === Level.FINEST -> org.apache.logging.log4j.Level.TRACE
+        level === Level.FINE -> org.apache.logging.log4j.Level.DEBUG
+        level === Level.INFO -> org.apache.logging.log4j.Level.INFO
+        level === Level.WARNING -> org.apache.logging.log4j.Level.WARN
+        level === Level.SEVERE -> org.apache.logging.log4j.Level.ERROR
+        level === Level.CONFIG -> org.apache.logging.log4j.Level.INFO
+        level === Level.FINER -> org.apache.logging.log4j.Level.DEBUG
+        level === Level.OFF -> org.apache.logging.log4j.Level.OFF
+        else -> org.apache.logging.log4j.Level.INFO
       }
     }
 
-    private fun toStandardLevel(log4jLevel: org.apache.log4j.Level): Level {
+    private fun toStandardLevel(log4jLevel: org.apache.logging.log4j.Level): Level {
       return when {
-        log4jLevel === org.apache.log4j.Level.TRACE -> Level.FINEST
-        log4jLevel === org.apache.log4j.Level.DEBUG -> Level.FINE
-        log4jLevel === org.apache.log4j.Level.INFO -> Level.INFO
-        log4jLevel === org.apache.log4j.Level.WARN -> Level.WARNING
-        log4jLevel === org.apache.log4j.Level.ERROR -> Level.SEVERE
-        log4jLevel === org.apache.log4j.Level.FATAL -> Level.SEVERE
-        log4jLevel === org.apache.log4j.Level.OFF -> Level.OFF
+        log4jLevel === org.apache.logging.log4j.Level.TRACE -> Level.FINEST
+        log4jLevel === org.apache.logging.log4j.Level.DEBUG -> Level.FINE
+        log4jLevel === org.apache.logging.log4j.Level.INFO -> Level.INFO
+        log4jLevel === org.apache.logging.log4j.Level.WARN -> Level.WARNING
+        log4jLevel === org.apache.logging.log4j.Level.ERROR -> Level.SEVERE
+        log4jLevel === org.apache.logging.log4j.Level.FATAL -> Level.SEVERE
+        log4jLevel === org.apache.logging.log4j.Level.OFF -> Level.OFF
         else -> Level.INFO
       }
     }
