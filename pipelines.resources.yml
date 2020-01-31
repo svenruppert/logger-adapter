@@ -1,0 +1,6 @@
+resources:
+  - name: svenruppert_logger-adapter
+    type: GitRepo
+    configuration:
+      gitProvider: myGitHub
+      path: myself/MyFirstRepo
