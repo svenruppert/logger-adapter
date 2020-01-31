@@ -6,6 +6,7 @@
     <ignoreVersion type="regex">(?i).*[-_\.]rc[0-9\.]*</ignoreVersion>
     <ignoreVersion type="regex">(?i).*[-_\.]beta[0-9\.-]*</ignoreVersion>
     <ignoreVersion type="regex">(?i).*[-_\.]alpha[0-9\.-]*</ignoreVersion>
+    <ignoreVersion type="regex">(?i).*[-_\.]Alpha</ignoreVersion>
     <ignoreVersion type="regex">(?i).*[-_\.]nightly[0-9\.]*</ignoreVersion>
     <ignoreVersion type="regex">(?i).*[-_\.]jboss[0-9\.]*</ignoreVersion>
     <ignoreVersion type="regex">(?i).*-atlassian-[0-9\.]*</ignoreVersion>
@@ -14,9 +15,15 @@
     <ignoreVersion type="regex">\d{4,}.*</ignoreVersion>  <!-- z.B. commons-collections:commons-collections ... 3.2.1.redhat-7 -> 20040117.000000 -->
   </ignoreVersions>
   <rules>
+    <rule groupId="org.cache2k">
+      <ignoreVersions>
+        <ignoreVersion>1.3.1.Alpha</ignoreVersion>
+      </ignoreVersions>
+    </rule>
     <rule groupId="org.slf4j" comparisonMethod="maven">
       <ignoreVersions>
         <ignoreVersion type="regex">.*-xwiki</ignoreVersion>
+        <ignoreVersion type="regex">.*-alpha*</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="org.apache.maven.plugins" artifactId="maven-surefire-plugin" comparisonMethod="maven">
