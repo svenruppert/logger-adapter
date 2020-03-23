@@ -23,7 +23,7 @@
 
   <groupId>org.rapidpm</groupId>
   <artifactId>rapidpm-logger-adapter</artifactId>
-  <version>01.00.09-alpha</version>
+  <version>01.00.10</version>
   <packaging>jar</packaging>
 
 
@@ -146,7 +146,6 @@
   </pluginRepositories>
 
   <dependencies>
-
     <!--LOG4J-->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
