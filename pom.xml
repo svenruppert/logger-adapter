@@ -23,7 +23,7 @@
 
   <groupId>org.rapidpm</groupId>
   <artifactId>rapidpm-logger-adapter</artifactId>
-  <version>01.00.10-111-112</version>
+  <version>01.00.10-111-112-113</version>
   <packaging>jar</packaging>
 
 
