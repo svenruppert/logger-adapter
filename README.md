@@ -9,21 +9,6 @@ code.
 ![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=security_rating)
 ![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=svenruppert_logger-adapter&metric=sqale_rating)
 
-## Repositories
-This is deployed to Bintray.
-If your project is using **rapidpm-dependencies** as parent already, this is included.
-If you are using this independently, you need to add the repository to your **pom.xml**
-
-```xml
-    <repository>
-      <id>bintray-svenruppert-rapidpm</id>
-      <name>bintray</name>
-      <url>https://svenruppert.bintray.com/rapidpm</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-```
 
 ## JDK8 or JDK9 and above
 I compiled this with the Open JDK8.
@@ -64,30 +49,7 @@ module rapidpm.dependencies.core.logger {
 * JDK 11
 * JDK 12
 * JDK 13
-
-## Distribution Management
-The final releases are available in maven central.
-But additionally I am using JITPack and JitCI.
-To used JitPack as well you have to add the JitPack Repository to your *pom.xml*
-
-```xml
-  <repositories>
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
-  </repositories>
-``` 
-
-The snapshot dependencies are now available as well as releases under
-
-```xml
-	<dependency>
-	    <groupId>com.github.svenruppert</groupId>
-	    <artifactId>logger-adapter</artifactId>
-	    <version>--version--</version>
-	</dependency>
-```
+* JDK 14
 
 ## Why do we need a Core Java Logger Adapter?
 In every project, there is the decision of what logger framework should be used.
