@@ -40,6 +40,7 @@ import java.util.Map;
 
 // contributors: lizongbo: proposed special treatment of array parameter values
 // Joern Huxhorn: pointed out double[] omission, suggested deep array copy
+
 /**
  * Formats messages according to very simple substitution rules. Substitutions can be made 1, 2 or
  * more arguments.
@@ -100,11 +101,15 @@ import java.util.Map;
  * @author Ceki G&uuml;lc&uuml;
  * @author Joern Huxhorn
  */
-final public class MessageFormatter {
-  static final char DELIM_START = '{';
-  static final char DELIM_STOP = '}';
-  static final String DELIM_STR = "{}";
-  private static final char ESCAPE_CHAR = '\\';
+public final class MessageFormatter {
+
+  private MessageFormatter() {
+  }
+
+  static final         char   DELIM_START = '{';
+  static final         char   DELIM_STOP  = '}';
+  static final         String DELIM_STR   = "{}";
+  private static final char   ESCAPE_CHAR = '\\';
 
   /**
    * Performs single argument substitution for the 'messagePattern' passed as parameter.
@@ -122,8 +127,8 @@ final public class MessageFormatter {
    * @param arg The argument to be substituted in place of the formatting anchor
    * @return The formatted message
    */
-  final public static FormattingTuple format(String messagePattern, Object arg) {
-    return arrayFormat(messagePattern, new Object[] {arg});
+  public static FormattingTuple format(String messagePattern, Object arg) {
+    return arrayFormat(messagePattern, new Object[]{arg});
   }
 
   /**
@@ -143,13 +148,12 @@ final public class MessageFormatter {
    * @param arg2 The argument to be substituted in place of the second formatting anchor
    * @return The formatted message
    */
-  final public static FormattingTuple format(final String messagePattern, Object arg1,
-      Object arg2) {
-    return arrayFormat(messagePattern, new Object[] {arg1, arg2});
+  public static FormattingTuple format(final String messagePattern, Object arg1, Object arg2) {
+    return arrayFormat(messagePattern, new Object[]{arg1, arg2});
   }
 
 
-  static final Throwable getThrowableCandidate(Object[] argArray) {
+  static Throwable getThrowableCandidate(Object[] argArray) {
     if (argArray == null || argArray.length == 0) {
       return null;
     }
@@ -161,10 +165,9 @@ final public class MessageFormatter {
     return null;
   }
 
-  final public static FormattingTuple arrayFormat(final String messagePattern,
-      final Object[] argArray) {
+  public static FormattingTuple arrayFormat(final String messagePattern, final Object[] argArray) {
     Throwable throwableCandidate = getThrowableCandidate(argArray);
-    Object[] args = argArray;
+    Object[]  args               = argArray;
     if (throwableCandidate != null) {
       args = trimmedCopy(argArray);
     }
@@ -176,13 +179,14 @@ final public class MessageFormatter {
       throw new IllegalStateException("non-sensical empty or null argument array");
     }
     final int trimemdLen = argArray.length - 1;
-    Object[] trimmed = new Object[trimemdLen];
+    Object[]  trimmed    = new Object[trimemdLen];
     System.arraycopy(argArray, 0, trimmed, 0, trimemdLen);
     return trimmed;
   }
 
-  final public static FormattingTuple arrayFormat(final String messagePattern,
-      final Object[] argArray, Throwable throwable) {
+  public static FormattingTuple arrayFormat(final String messagePattern,
+                                                  final Object[] argArray,
+                                                  Throwable throwable) {
 
     if (messagePattern == null) {
       return new FormattingTuple(null, argArray, throwable);
@@ -197,8 +201,8 @@ final public class MessageFormatter {
     // use string builder for better multicore performance
     StringBuilder sbuf = new StringBuilder(messagePattern.length() + 50);
 
-    int L;
-    for (L = 0; L < argArray.length; L++) {
+    int left;
+    for (left = 0; left < argArray.length; left++) {
 
       j = messagePattern.indexOf(DELIM_STR, i);
 
@@ -214,7 +218,7 @@ final public class MessageFormatter {
       } else {
         if (isEscapedDelimeter(messagePattern, j)) {
           if (!isDoubleEscaped(messagePattern, j)) {
-            L--; // DELIM_START was escaped, thus should not be incremented
+            left--; // DELIM_START was escaped, thus should not be incremented
             sbuf.append(messagePattern, i, j - 1);
             sbuf.append(DELIM_START);
             i = j + 1;
@@ -223,13 +227,13 @@ final public class MessageFormatter {
             // itself escaped: "abc x:\\{}"
             // we have to consume one backward slash
             sbuf.append(messagePattern, i, j - 1);
-            deeplyAppendParameter(sbuf, argArray[L], new HashMap<Object[], Object>());
+            deeplyAppendParameter(sbuf, argArray[left], new HashMap<Object[], Object>());
             i = j + 2;
           }
         } else {
           // normal case
           sbuf.append(messagePattern, i, j);
-          deeplyAppendParameter(sbuf, argArray[L], new HashMap<Object[], Object>());
+          deeplyAppendParameter(sbuf, argArray[left], new HashMap<Object[], Object>());
           i = j + 2;
         }
       }
@@ -239,35 +243,27 @@ final public class MessageFormatter {
     return new FormattingTuple(sbuf.toString(), argArray, throwable);
   }
 
-  final static boolean isEscapedDelimeter(String messagePattern, int delimeterStartIndex) {
+  static boolean isEscapedDelimeter(String messagePattern, int delimeterStartIndex) {
 
     if (delimeterStartIndex == 0) {
       return false;
     }
     char potentialEscape = messagePattern.charAt(delimeterStartIndex - 1);
-    if (potentialEscape == ESCAPE_CHAR) {
-      return true;
-    } else {
-      return false;
-    }
+    return potentialEscape == ESCAPE_CHAR;
   }
 
-  final static boolean isDoubleEscaped(String messagePattern, int delimeterStartIndex) {
-    if (delimeterStartIndex >= 2 && messagePattern.charAt(delimeterStartIndex - 2) == ESCAPE_CHAR) {
-      return true;
-    } else {
-      return false;
-    }
+  static boolean isDoubleEscaped(String messagePattern, int delimeterStartIndex) {
+    return delimeterStartIndex >= 2 && messagePattern.charAt(delimeterStartIndex - 2) == ESCAPE_CHAR;
   }
 
   // special treatment of array values was suggested by 'lizongbo'
-  private static void deeplyAppendParameter(StringBuilder sbuf, Object o,
-      Map<Object[], Object> seenMap) {
+  private static void deeplyAppendParameter(StringBuilder sbuf, Object o, Map<Object[], Object> seenMap) {
     if (o == null) {
       sbuf.append("null");
       return;
     }
-    if (!o.getClass().isArray()) {
+    if (!o.getClass()
+          .isArray()) {
       safeObjectAppend(sbuf, o);
     } else {
       // check for primitive array types because they
@@ -299,23 +295,21 @@ final public class MessageFormatter {
       String oAsString = o.toString();
       sbuf.append(oAsString);
     } catch (Throwable t) {
-      Util.INSTANCE.report("SLF4J: Failed toString() invocation on an object of type ["
-                           + o.getClass().getName() + "]", t);
+      Util.INSTANCE.report("SLF4J: Failed toString() invocation on an object of type [" + o.getClass()
+                                                                                           .getName() + "]", t);
       sbuf.append("[FAILED toString()]");
     }
 
   }
 
-  private static void objectArrayAppend(StringBuilder sbuf, Object[] a,
-      Map<Object[], Object> seenMap) {
+  private static void objectArrayAppend(StringBuilder sbuf, Object[] a, Map<Object[], Object> seenMap) {
     sbuf.append('[');
     if (!seenMap.containsKey(a)) {
       seenMap.put(a, null);
       final int len = a.length;
       for (int i = 0; i < len; i++) {
         deeplyAppendParameter(sbuf, a[i], seenMap);
-        if (i != len - 1)
-          sbuf.append(", ");
+        if (i != len - 1) sbuf.append(", ");
       }
       // allow repeats in siblings
       seenMap.remove(a);
@@ -330,8 +324,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
@@ -341,8 +334,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
@@ -352,8 +344,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
@@ -363,8 +354,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
@@ -374,8 +364,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
@@ -385,8 +374,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
@@ -396,8 +384,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
@@ -407,8 +394,7 @@ final public class MessageFormatter {
     final int len = a.length;
     for (int i = 0; i < len; i++) {
       sbuf.append(a[i]);
-      if (i != len - 1)
-        sbuf.append(", ");
+      if (i != len - 1) sbuf.append(", ");
     }
     sbuf.append(']');
   }
